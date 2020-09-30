@@ -590,11 +590,11 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    682 				; optimize OK (slideshow.pas), line = 76
    683
    684 231D A5 E4			lda I
-   685 231F F0 27			jeq l_0120
+   685 231F F0 27			jeq l_0126
    686
    687 				; --- WhileProlog
-   688 2321 4C 3F 23			jmp l_0123
-   689 2324			l_0124
+   688 2321 4C 3F 23			jmp l_0129
+   689 2324			l_012A
    690
    691 				; optimize OK (slideshow.pas), line = 79
    692
@@ -611,24 +611,24 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    703 2339 90 02			scc
    704 233B E6 E6			inc P+1
    705
-   706 				; optimize FAIL (0, slideshow.pas), line = 81
+   706 				; optimize FAIL (0, slideshow.pas), line = 80
    707
    708 233D E6 E1			inc START
-   709 233F			l_0123
+   709 233F			l_0129
    710
    711 				; optimize OK (slideshow.pas), line = 77
    712
    713 233F A5 E1			lda START
    714 2341 C5 E0			cmp STOP
-   715 2343 90 DF			jcc l_0124
-   716 2345 4C 78 23			jmp l_0146
-   717 2348			l_0120
+   715 2343 90 DF			jcc l_012A
+   716 2345 4C 78 23			jmp l_014C
+   717 2348			l_0126
    718
    719 				; --- WhileProlog
-   720 2348 4C 72 23			jmp l_0148
-   721 234B			l_0149
+   720 2348 4C 72 23			jmp l_014E
+   721 234B			l_014F
    722
-   723 				; optimize OK (slideshow.pas), line = 85
+   723 				; optimize OK (slideshow.pas), line = 84
    724
    725 234B A4 E5 84 92 A4 E6 + 	mwy P :bp2
    726 2353 A0 00			ldy #$00
@@ -640,7 +640,7 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    732 2361 05 A1			ora :STACKORIGIN+9
    733 2363 91 92			sta (:bp2),y
    734
-   735 				; optimize OK (slideshow.pas), line = 86
+   735 				; optimize OK (slideshow.pas), line = 85
    736
    737 2365 A5 E5			lda P
    738 2367 18 69 28			add #$28
@@ -648,43 +648,43 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    740 236C 90 02			scc
    741 236E E6 E6			inc P+1
    742
-   743 				; optimize FAIL (0, slideshow.pas), line = 87
+   743 				; optimize FAIL (0, slideshow.pas), line = 85
    744
    745 2370 E6 E1			inc START
-   746 2372			l_0148
+   746 2372			l_014E
    747
-   748 				; optimize OK (slideshow.pas), line = 84
+   748 				; optimize OK (slideshow.pas), line = 83
    749
    750 2372 A5 E1			lda START
    751 2374 C5 E0			cmp STOP
-   752 2376 90 D3			jcc l_0149
-   753 2378			l_0146
+   752 2376 90 D3			jcc l_014F
+   753 2378			l_014C
    754
-   755 				; optimize OK (slideshow.pas), line = 90
+   755 				; optimize OK (slideshow.pas), line = 88
    756
    757 2378 A5 E0 85 E1			mva STOP START
    758
-   759 				; optimize OK (slideshow.pas), line = 91
+   759 				; optimize OK (slideshow.pas), line = 89
    760
    761 237C AD 0A D2			lda RND
    762 237F 29 01			and #$01
-   763 2381 F0 0B			jeq l_0186
+   763 2381 F0 0B			jeq l_018C
    764 2383 A4 E2			ldy C
    765 2385 B9 06 24			lda adr.COLHEIGHT,y
    766 2388 38 E9 01			sub #$01
    767 238B 99 06 24			sta adr.COLHEIGHT,y
-   768 238E			l_0186
+   768 238E			l_018C
    769
-   770 				; optimize OK (slideshow.pas), line = 92
+   770 				; optimize OK (slideshow.pas), line = 90
    771
    772 238E AD 0A D2			lda RND
    773 2391 29 01			and #$01
-   774 2393 F0 0B			jeq l_019D
+   774 2393 F0 0B			jeq l_01A3
    775 2395 A4 E2			ldy C
    776 2397 B9 06 24			lda adr.COLHEIGHT,y
    777 239A 18 69 01			add #$01
    778 239D 99 06 24			sta adr.COLHEIGHT,y
-   779 23A0			l_019D
+   779 23A0			l_01A3
    780
    781 				; --- ForToDoEpilog
    782 23A0 C6 E2			dec C
@@ -701,29 +701,29 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    793 23B0 30 03 4C B7 22		jpl l_008E
    794 23B5			l_009C
    795
-   796 				; optimize FAIL ('SYSTEM.PAUSE_0060', slideshow.pas), line = 96
+   796 				; optimize FAIL ('SYSTEM.PAUSE_0060', slideshow.pas), line = 94
    797
    798 23B5 20 1C 22			jsr SYSTEM.PAUSE_0060
    799
-   800 				; optimize OK (slideshow.pas), line = 96
+   800 				; optimize OK (slideshow.pas), line = 94
    801
    802 23B8 A9 22 8D 2F 02		mva #$22 ATARI.SDMCTL
    803
-   804 				; optimize FAIL ('SYSTEM.PAUSE_0061', slideshow.pas), line = 97
+   804 				; optimize FAIL ('SYSTEM.PAUSE_0061', slideshow.pas), line = 95
    805
    806 23BD E8				inx
    807 23BE A9 96 95 98			mva #$96 :STACKORIGIN,x
    808 23C2 A9 00 95 A8			mva #$00 :STACKORIGIN+STACKWIDTH,x
    809 23C6 20 23 22			jsr SYSTEM.PAUSE_0061
    810
-   811 				; optimize FAIL ('CRT.KEYPRESSED', slideshow.pas), line = 98
+   811 				; optimize FAIL ('CRT.KEYPRESSED', slideshow.pas), line = 96
    812
    813 23C9 20 4F 22			jsr CRT.KEYPRESSED
    814 23CC CA				dex
    815 23CD B5 99			lda :STACKORIGIN+1,x
    816 23CF D0 03 4C 85 22		jeq l_007A
    817
-   818 				; optimize FAIL ('CRT.TEXTMODE', slideshow.pas), line = 99
+   818 				; optimize FAIL ('CRT.TEXTMODE', slideshow.pas), line = 97
    819
    820 23D4 E8				inx
    821 23D5 A9 00 95 98			mva #$00 :STACKORIGIN,x

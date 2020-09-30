@@ -73,18 +73,16 @@ begin
             stop := start;
             start := colheight[c];
           end;
-          if boolean(i) then begin
+          if i <> 0 then begin
             while start < stop do begin
               //p[0] := (p[0] and %11110000) or c
               p^ := c;
-              inc(p,40);
-              inc(start);
+              inc(p,40); inc(start);
             end;
           end else begin
             while start < stop do begin
               p^ := (p^ and %00001111) or (c shl 4);
-              inc(p,40);
-              inc(start);
+              inc(p,40); inc(start);
             end;
           end;
           start := stop;
