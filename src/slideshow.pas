@@ -73,14 +73,19 @@ begin
             stop := start;
             start := colheight[c];
           end;
-          while start < stop do begin
-            if i = 1 then
-              p^ := c
+          if boolean(i) then begin
+            while start < stop do begin
               //p[0] := (p[0] and %11110000) or c
-            else
+              p^ := c;
+              inc(p,40);
+              inc(start);
+            end;
+          end else begin
+            while start < stop do begin
               p^ := (p^ and %00001111) or (c shl 4);
-            inc(p,40);
-            inc(start);
+              inc(p,40);
+              inc(start);
+            end;
           end;
           start := stop;
           if boolean(rnd and 1) then dec(colheight[c]);

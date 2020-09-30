@@ -11,33 +11,33 @@ mads 2.1.0
    106
    107 21CD			START
    108 21CD BA				tsx
-   109 21CE 8E C9 23			stx MAIN.@halt+1
+   109 21CE 8E DD 23			stx MAIN.@halt+1
    110
    111 					.ifdef fmulinit
    112 					fmulinit
    113 					eif
    114
    115 = 0018			VLEN	= VARDATASIZE-VARINITSIZE
-   116 = 23E8			VADR	= DATAORIGIN+VARINITSIZE
+   116 = 23FC			VADR	= DATAORIGIN+VARINITSIZE
    117
    118 					ift VADR > $BFFF
    119 					ert 'Invalid memory address range ',VADR
    120 					eli (VLEN>0) && (VLEN<=256)
    121 21D1 A2 E8			ldx #256-VLEN
    122 21D3 A9 00			lda #0
-   123 21D5 9D 00 23 E8 D0 FA		sta:rne VADR+VLEN-256,x+
+   123 21D5 9D 14 23 E8 D0 FA		sta:rne VADR+VLEN-256,x+
    124 					eli VLEN>0
    125 					@fill #VADR #VLEN #0
    126 					eif
    127
-   128 21DB A9 00 85 82 A9 24 + 	mwa #PROGRAMSTACK psptr
+   128 21DB A9 14 85 82 A9 24 + 	mwa #PROGRAMSTACK psptr
    129
    130 					.ifdef MAIN.@DEFINES.ROMOFF
    131 					icl 'atari\romoff.asm'
    132 					.endif
    133
    134 21E3 A2 0F			ldx #$0F					; DOS II+/D ParamStr
-   135 21E5 BD 40 03 9D CC 23 + 	mva:rpl $340,x MAIN.IOCB@COPY,x-
+   135 21E5 BD 40 03 9D E0 23 + 	mva:rpl $340,x MAIN.IOCB@COPY,x-
    136
    137 21EE E8				inx						; X = 0
    138 21EF 86 90			stx bp						; BP = 0
@@ -131,20 +131,20 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    225
    226 				; Generate Assignment for WORD / SMALLINT / SHORTREAL / POINTER
    227 				; as Pointer
-   228 2223 B5 98 8D ED 23		mva :STACKORIGIN,x N
-   229 2228 B5 A8 8D EE 23		mva :STACKORIGIN+STACKWIDTH,x N+1
+   228 2223 B5 98 8D 01 24		mva :STACKORIGIN,x N
+   229 2228 B5 A8 8D 02 24		mva :STACKORIGIN+STACKWIDTH,x N+1
    230 222D CA				dex
    231
    232 				; ---------------------  ASM Block 040  ---------------------
    233
    234
-   235 222E AD ED 23		loop	lda n
-   236 2231 0D EE 23			ora n+1
+   235 222E AD 01 24		loop	lda n
+   236 2231 0D 02 24			ora n+1
    237 2234 F0 14			beq stop
    238
    239 2236 A5 14 C5 14 F0 FC		lda:cmp:req :rtclok+2
    240
-   241 223C AD ED 23 D0 03 CE + 	dew n
+   241 223C AD 01 24 D0 03 CE + 	dew n
    242
    243 2247 4C 2E 22			jmp loop
    244 224A			stop
@@ -152,9 +152,9 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    246
    247 				; ------------------------------------------------------------
    248
-   249 = 23ED			N	= DATAORIGIN+$000B
+   249 = 2401			N	= DATAORIGIN+$000B
    250
-   251 = 23ED			@VarData	= N
+   251 = 2401			@VarData	= N
    252 = 0002			@VarDataSize	= 2
    253
    254 224A			@exit
@@ -218,19 +218,19 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    312 = 0008			FMOPENWRITE	= $08
    313 = 0009			FMOPENAPPEND	= $09
    314 = 000C			FMOPENREADWRITE	= $0C
-   315 = 23E2			SCREENWIDTH	= DATAORIGIN+$0000
-   316 = 23E4			SCREENHEIGHT	= DATAORIGIN+$0002
-   317 = 23E6			DATESEPARATOR	= DATAORIGIN+$0004
+   315 = 23F6			SCREENWIDTH	= DATAORIGIN+$0000
+   316 = 23F8			SCREENHEIGHT	= DATAORIGIN+$0002
+   317 = 23FA			DATESEPARATOR	= DATAORIGIN+$0004
    318 = D014			TVSYSTEM	= $D014
    319 = 02C0			adr.PALETTE	= $02C0
    320 224B			.var PALETTE	= adr.PALETTE .word
    321 = D012			adr.HPALETTE	= $D012
    322 224B			.var HPALETTE	= adr.HPALETTE .word
-   323 = 23E7			FILEMODE	= DATAORIGIN+$0005
-   324 = 23E8			GRAPHMODE	= DATAORIGIN+$0006
-   325 = 23E9			IORESULT	= DATAORIGIN+$0007
-   326 = 23EA			EOLN	= DATAORIGIN+$0008
-   327 = 23EB			RNDSEED	= DATAORIGIN+$0009
+   323 = 23FB			FILEMODE	= DATAORIGIN+$0005
+   324 = 23FC			GRAPHMODE	= DATAORIGIN+$0006
+   325 = 23FD			IORESULT	= DATAORIGIN+$0007
+   326 = 23FE			EOLN	= DATAORIGIN+$0008
+   327 = 23FF			RNDSEED	= DATAORIGIN+$0009
    328
    329 = 224B C0 02		PALETTE
    329 = 224D 12 D0		HPALETTE
@@ -349,7 +349,7 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    441
    442 				;	sty kbcodes
    443
-   444 2259 8C F0 23		skp	sty Result
+   444 2259 8C 04 24		skp	sty Result
    445
    446 225C			@exit
    447
@@ -359,7 +359,7 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    451 				; as Pointer
    452
    453 225C E8				inx
-   454 225D AD F0 23 95 98		mva RESULT :STACKORIGIN,x
+   454 225D AD 04 24 95 98		mva RESULT :STACKORIGIN,x
    455
    456 					.ifdef @new
    457 					lda <@VarData
@@ -371,9 +371,9 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    463
    464 				; ------------------------------------------------------------
    465
-   466 = 23F0			RESULT	= DATAORIGIN+$000E
+   466 = 2404			RESULT	= DATAORIGIN+$000E
    467
-   468 = 23F0			@VarData	= RESULT
+   468 = 2404			@VarData	= RESULT
    469 = 0001			@VarDataSize	= 1
    470
    471 2262 60				rts						; ret
@@ -385,7 +385,7 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    477
    478 				; Generate Assignment for BYTE / CHAR / SHORTINT / BOOLEAN
    479 				; as Pointer
-   480 2263 B5 98 8D F1 23		mva :STACKORIGIN,x MODE
+   480 2263 B5 98 8D 05 24		mva :STACKORIGIN,x MODE
    481 2268 CA				dex
    482
    483 				; ---------------------  ASM Block 059  ---------------------
@@ -399,9 +399,9 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    491
    492 				; ------------------------------------------------------------
    493
-   494 = 23F1			MODE	= DATAORIGIN+$000F
+   494 = 2405			MODE	= DATAORIGIN+$000F
    495
-   496 = 23F1			@VarData	= MODE
+   496 = 2405			@VarData	= MODE
    497 = 0001			@VarDataSize	= 1
    498
    499 2270			@exit
@@ -418,7 +418,7 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    510
    511 				; ------------------------------------------------------------
    512
-   513 = 23EF			TEXTATTR	= DATAORIGIN+$000D
+   513 = 2403			TEXTATTR	= DATAORIGIN+$000D
    514 = D01F			CONSOL	= $D01F
    515 = 0000			CN_START_SELECT_OPTION	= $00
    516 = 0001			CN_SELECT_OPTION	= $01
@@ -489,9 +489,9 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    581 2298 85 88			sta :edx
    582 229A A9 20			lda #$20
    583 229C 85 89			sta :edx+1
-   584 229E AD E0 23			lda COLHEIGHT
+   584 229E AD F4 23			lda COLHEIGHT
    585 22A1 85 8C			sta :ecx
-   586 22A3 AD E1 23			lda COLHEIGHT+1
+   586 22A3 AD F5 23			lda COLHEIGHT+1
    587 22A6 85 8D			sta :ecx+1
    588 22A8 A9 0E			lda #$0E
    589 22AA 85 84			sta :eax
@@ -539,7 +539,7 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    631 				; optimize OK (slideshow.pas), line = 70
    632
    633 22D0 A4 E2			ldy C
-   634 22D2 B9 F2 23			lda adr.COLHEIGHT,y
+   634 22D2 B9 06 24			lda adr.COLHEIGHT,y
    635 22D5 85 E0			sta STOP
    636
    637 				; optimize OK (slideshow.pas), line = 71
@@ -583,238 +583,260 @@ Macro: UNITINITIALIZATION [Source: slideshow.a65]
    675 				; optimize OK (slideshow.pas), line = 74
    676
    677 2316 A4 E2			ldy C
-   678 2318 B9 F2 23			lda adr.COLHEIGHT,y
+   678 2318 B9 06 24			lda adr.COLHEIGHT,y
    679 231B 85 E1			sta START
    680 231D			l_00F5
    681
-   682 				; --- WhileProlog
-   683 231D 4C 5E 23			jmp l_0116
-   684 2320			l_0117
-   685
-   686 				; optimize OK (slideshow.pas), line = 77
-   687
-   688 2320 A5 E4			lda I
-   689 2322 C9 01			cmp #$01
-   690 2324 D0 11			jne l_0129
-   691
-   692 				; optimize OK (slideshow.pas), line = 78
-   693
-   694 2326 A4 E5 84 92 A4 E6 + 	mwy P :bp2
-   695 232E A0 00			ldy #$00
-   696 2330 A5 E2			lda C
-   697 2332 91 92			sta (:bp2),y
-   698 2334 4C 51 23			jmp l_0139
-   699 2337			l_0129
-   700
-   701 				; optimize OK (slideshow.pas), line = 81
-   702
-   703 2337 A4 E5 84 92 A4 E6 + 	mwy P :bp2
-   704 233F A0 00			ldy #$00
-   705 2341 B1 92			lda (:bp2),y
-   706 2343 29 0F			and #$0F
-   707 2345 85 A1			sta :STACKORIGIN+9
-   708 2347 A5 E2			lda C
-   709 2349 0A 0A 0A 0A			:4 asl @
-   710 234D 05 A1			ora :STACKORIGIN+9
-   711 234F 91 92			sta (:bp2),y
-   712 2351			l_0139
-   713
-   714 				; optimize OK (slideshow.pas), line = 82
-   715
-   716 2351 A5 E5			lda P
-   717 2353 18 69 28			add #$28
-   718 2356 85 E5			sta P
-   719 2358 90 02			scc
-   720 235A E6 E6			inc P+1
-   721
-   722 				; optimize FAIL (0, slideshow.pas), line = 83
-   723
-   724 235C E6 E1			inc START
-   725 235E			l_0116
-   726
-   727 				; optimize OK (slideshow.pas), line = 76
-   728
-   729 235E A5 E1			lda START
-   730 2360 C5 E0			cmp STOP
-   731 2362 90 BC			jcc l_0117
-   732
-   733 				; optimize OK (slideshow.pas), line = 85
+   682 				; optimize OK (slideshow.pas), line = 76
+   683
+   684 231D A5 E4			lda I
+   685 231F F0 27			jeq l_0120
+   686
+   687 				; --- WhileProlog
+   688 2321 4C 3F 23			jmp l_0123
+   689 2324			l_0124
+   690
+   691 				; optimize OK (slideshow.pas), line = 79
+   692
+   693 2324 A4 E5 84 92 A4 E6 + 	mwy P :bp2
+   694 232C A0 00			ldy #$00
+   695 232E A5 E2			lda C
+   696 2330 91 92			sta (:bp2),y
+   697
+   698 				; optimize OK (slideshow.pas), line = 80
+   699
+   700 2332 A5 E5			lda P
+   701 2334 18 69 28			add #$28
+   702 2337 85 E5			sta P
+   703 2339 90 02			scc
+   704 233B E6 E6			inc P+1
+   705
+   706 				; optimize FAIL (0, slideshow.pas), line = 81
+   707
+   708 233D E6 E1			inc START
+   709 233F			l_0123
+   710
+   711 				; optimize OK (slideshow.pas), line = 77
+   712
+   713 233F A5 E1			lda START
+   714 2341 C5 E0			cmp STOP
+   715 2343 90 DF			jcc l_0124
+   716 2345 4C 78 23			jmp l_0146
+   717 2348			l_0120
+   718
+   719 				; --- WhileProlog
+   720 2348 4C 72 23			jmp l_0148
+   721 234B			l_0149
+   722
+   723 				; optimize OK (slideshow.pas), line = 85
+   724
+   725 234B A4 E5 84 92 A4 E6 + 	mwy P :bp2
+   726 2353 A0 00			ldy #$00
+   727 2355 B1 92			lda (:bp2),y
+   728 2357 29 0F			and #$0F
+   729 2359 85 A1			sta :STACKORIGIN+9
+   730 235B A5 E2			lda C
+   731 235D 0A 0A 0A 0A			:4 asl @
+   732 2361 05 A1			ora :STACKORIGIN+9
+   733 2363 91 92			sta (:bp2),y
    734
-   735 2364 A5 E0 85 E1			mva STOP START
+   735 				; optimize OK (slideshow.pas), line = 86
    736
-   737 				; optimize OK (slideshow.pas), line = 86
-   738
-   739 2368 AD 0A D2			lda RND
-   740 236B 29 01			and #$01
-   741 236D F0 0B			jeq l_0176
-   742 236F A4 E2			ldy C
-   743 2371 B9 F2 23			lda adr.COLHEIGHT,y
-   744 2374 38 E9 01			sub #$01
-   745 2377 99 F2 23			sta adr.COLHEIGHT,y
-   746 237A			l_0176
+   737 2365 A5 E5			lda P
+   738 2367 18 69 28			add #$28
+   739 236A 85 E5			sta P
+   740 236C 90 02			scc
+   741 236E E6 E6			inc P+1
+   742
+   743 				; optimize FAIL (0, slideshow.pas), line = 87
+   744
+   745 2370 E6 E1			inc START
+   746 2372			l_0148
    747
-   748 				; optimize OK (slideshow.pas), line = 87
+   748 				; optimize OK (slideshow.pas), line = 84
    749
-   750 237A AD 0A D2			lda RND
-   751 237D 29 01			and #$01
-   752 237F F0 0B			jeq l_018D
-   753 2381 A4 E2			ldy C
-   754 2383 B9 F2 23			lda adr.COLHEIGHT,y
-   755 2386 18 69 01			add #$01
-   756 2389 99 F2 23			sta adr.COLHEIGHT,y
-   757 238C			l_018D
+   750 2372 A5 E1			lda START
+   751 2374 C5 E0			cmp STOP
+   752 2376 90 D3			jcc l_0149
+   753 2378			l_0146
+   754
+   755 				; optimize OK (slideshow.pas), line = 90
+   756
+   757 2378 A5 E0 85 E1			mva STOP START
    758
-   759 				; --- ForToDoEpilog
-   760 238C C6 E2			dec C
-   761 238E 30 03 4C D0 22		jpl l_00CA
-   762 2393			l_00D8
-   763
-   764 				; --- ForToDoEpilog
-   765 2393 C6 E4			dec I
-   766 2395 30 03 4C BB 22		jpl l_00A5
-   767 239A			l_00B3
-   768
-   769 				; --- ForToDoEpilog
-   770 239A C6 E3			dec X
-   771 239C 30 03 4C B7 22		jpl l_008E
-   772 23A1			l_009C
-   773
-   774 				; optimize FAIL ('SYSTEM.PAUSE_0060', slideshow.pas), line = 91
-   775
-   776 23A1 20 1C 22			jsr SYSTEM.PAUSE_0060
-   777
-   778 				; optimize OK (slideshow.pas), line = 91
-   779
-   780 23A4 A9 22 8D 2F 02		mva #$22 ATARI.SDMCTL
-   781
-   782 				; optimize FAIL ('SYSTEM.PAUSE_0061', slideshow.pas), line = 92
-   783
-   784 23A9 E8				inx
-   785 23AA A9 96 95 98			mva #$96 :STACKORIGIN,x
-   786 23AE A9 00 95 A8			mva #$00 :STACKORIGIN+STACKWIDTH,x
-   787 23B2 20 23 22			jsr SYSTEM.PAUSE_0061
-   788
-   789 				; optimize FAIL ('CRT.KEYPRESSED', slideshow.pas), line = 93
+   759 				; optimize OK (slideshow.pas), line = 91
+   760
+   761 237C AD 0A D2			lda RND
+   762 237F 29 01			and #$01
+   763 2381 F0 0B			jeq l_0186
+   764 2383 A4 E2			ldy C
+   765 2385 B9 06 24			lda adr.COLHEIGHT,y
+   766 2388 38 E9 01			sub #$01
+   767 238B 99 06 24			sta adr.COLHEIGHT,y
+   768 238E			l_0186
+   769
+   770 				; optimize OK (slideshow.pas), line = 92
+   771
+   772 238E AD 0A D2			lda RND
+   773 2391 29 01			and #$01
+   774 2393 F0 0B			jeq l_019D
+   775 2395 A4 E2			ldy C
+   776 2397 B9 06 24			lda adr.COLHEIGHT,y
+   777 239A 18 69 01			add #$01
+   778 239D 99 06 24			sta adr.COLHEIGHT,y
+   779 23A0			l_019D
+   780
+   781 				; --- ForToDoEpilog
+   782 23A0 C6 E2			dec C
+   783 23A2 30 03 4C D0 22		jpl l_00CA
+   784 23A7			l_00D8
+   785
+   786 				; --- ForToDoEpilog
+   787 23A7 C6 E4			dec I
+   788 23A9 30 03 4C BB 22		jpl l_00A5
+   789 23AE			l_00B3
    790
-   791 23B5 20 4F 22			jsr CRT.KEYPRESSED
-   792 23B8 CA				dex
-   793 23B9 B5 99			lda :STACKORIGIN+1,x
-   794 23BB D0 03 4C 85 22		jeq l_007A
+   791 				; --- ForToDoEpilog
+   792 23AE C6 E3			dec X
+   793 23B0 30 03 4C B7 22		jpl l_008E
+   794 23B5			l_009C
    795
-   796 				; optimize FAIL ('CRT.TEXTMODE', slideshow.pas), line = 94
+   796 				; optimize FAIL ('SYSTEM.PAUSE_0060', slideshow.pas), line = 96
    797
-   798 23C0 E8				inx
-   799 23C1 A9 00 95 98			mva #$00 :STACKORIGIN,x
-   800 23C5 20 63 22			jsr CRT.TEXTMODE
+   798 23B5 20 1C 22			jsr SYSTEM.PAUSE_0060
+   799
+   800 				; optimize OK (slideshow.pas), line = 96
    801
-   802 				; ------------------------------------------------------------
+   802 23B8 A9 22 8D 2F 02		mva #$22 ATARI.SDMCTL
    803
-   804 = 8010			LMS	= $8010
-   805 = 2000			adr.DL8	= CODEORIGIN+$0000
-   806 23C8			.var DL8	= adr.DL8 .word
-   807 = 20CA			adr.BASE	= CODEORIGIN+$00CA
-   808 23C8			.var BASE	= adr.BASE .word
-   809 = 00E0			STOP	= $E0
-   810 = 00E1			START	= $E1
-   811 = 00E2			C	= $E2
-   812 = 00E3			X	= $E3
-   813 = 00E4			I	= $E4
-   814 = 00E5			P	= $E5
-   815 = D20A			RND	= $D20A
-   816 = 23F2			adr.COLHEIGHT	= [DATAORIGIN+$0010] .array [14]
-   817 23C8			.var COLHEIGHT	= adr.COLHEIGHT .word
-   818 = 0000			@FORTMP_008B	= $00
-   819 = 0000			@FORTMP_00A2	= $00
-   820 = 0000			@FORTMP_00C7	= $00
-   821 23C8			@exit
-   822
-   823 23C8 A2 00		@halt	ldx #0
-   824 23CA 9A				txs
-   825 					.ifdef MAIN.@DEFINES.ROMOFF
-   826 					inc portb
-   827 					.endif
-   828
-   829 23CB 60				rts
-   830
-   831 				; ------------------------------------------------------------
-   832
-   833 23CC 00 00 00 00 00 00 + IOCB@COPY	:16 brk
-   834
-   835 				; ------------------------------------------------------------
-   836
-   837 23DC			.local	@DEFINES
-   838 23DC			ATARI
-   839 				.endl
-   840
-   841 = 23DC 00 20		DL8
-   841 = 23DE CA 20		BASE
-   841 = 23E0 F2 23		COLHEIGHT
-   841 				.endl							; MAIN
-   842
-   843 				; ------------------------------------------------------------
-   844 				; ------------------------------------------------------------
-   845
-   846 				.macro	UNITINITIALIZATION
-   847 				
-   848 					.ifdef MAIN.SYSTEM.@UnitInit
-   849 					jsr MAIN.SYSTEM.@UnitInit
-   850 					eif
-   851 				
-   852 					.ifdef MAIN.ATARI.@UnitInit
-   853 					jsr MAIN.ATARI.@UnitInit
-   854 					eif
-   855 				
-   856 					.ifdef MAIN.CRT.@UnitInit
-   857 					jsr MAIN.CRT.@UnitInit
-   858 					eif
-   859 				.endm
-   860
-   861 				; ------------------------------------------------------------
+   804 				; optimize FAIL ('SYSTEM.PAUSE_0061', slideshow.pas), line = 97
+   805
+   806 23BD E8				inx
+   807 23BE A9 96 95 98			mva #$96 :STACKORIGIN,x
+   808 23C2 A9 00 95 A8			mva #$00 :STACKORIGIN+STACKWIDTH,x
+   809 23C6 20 23 22			jsr SYSTEM.PAUSE_0061
+   810
+   811 				; optimize FAIL ('CRT.KEYPRESSED', slideshow.pas), line = 98
+   812
+   813 23C9 20 4F 22			jsr CRT.KEYPRESSED
+   814 23CC CA				dex
+   815 23CD B5 99			lda :STACKORIGIN+1,x
+   816 23CF D0 03 4C 85 22		jeq l_007A
+   817
+   818 				; optimize FAIL ('CRT.TEXTMODE', slideshow.pas), line = 99
+   819
+   820 23D4 E8				inx
+   821 23D5 A9 00 95 98			mva #$00 :STACKORIGIN,x
+   822 23D9 20 63 22			jsr CRT.TEXTMODE
+   823
+   824 				; ------------------------------------------------------------
+   825
+   826 = 8010			LMS	= $8010
+   827 = 2000			adr.DL8	= CODEORIGIN+$0000
+   828 23DC			.var DL8	= adr.DL8 .word
+   829 = 20CA			adr.BASE	= CODEORIGIN+$00CA
+   830 23DC			.var BASE	= adr.BASE .word
+   831 = 00E0			STOP	= $E0
+   832 = 00E1			START	= $E1
+   833 = 00E2			C	= $E2
+   834 = 00E3			X	= $E3
+   835 = 00E4			I	= $E4
+   836 = 00E5			P	= $E5
+   837 = D20A			RND	= $D20A
+   838 = 2406			adr.COLHEIGHT	= [DATAORIGIN+$0010] .array [14]
+   839 23DC			.var COLHEIGHT	= adr.COLHEIGHT .word
+   840 = 0000			@FORTMP_008B	= $00
+   841 = 0000			@FORTMP_00A2	= $00
+   842 = 0000			@FORTMP_00C7	= $00
+   843 23DC			@exit
+   844
+   845 23DC A2 00		@halt	ldx #0
+   846 23DE 9A				txs
+   847 					.ifdef MAIN.@DEFINES.ROMOFF
+   848 					inc portb
+   849 					.endif
+   850
+   851 23DF 60				rts
+   852
+   853 				; ------------------------------------------------------------
+   854
+   855 23E0 00 00 00 00 00 00 + IOCB@COPY	:16 brk
+   856
+   857 				; ------------------------------------------------------------
+   858
+   859 23F0			.local	@DEFINES
+   860 23F0			ATARI
+   861 				.endl
    862
-   863 					ift .SIZEOF(MAIN.SYSTEM) > 0
-   864 					.print 'SYSTEM: ',MAIN.SYSTEM,'..',MAIN.SYSTEM+.SIZEOF(MAIN.SYSTEM)-1
-   864 				SYSTEM: $21FD..$224E
-   865 					eif
-   866
-   867 					ift .SIZEOF(MAIN.ATARI) > 0
-   868 					.print 'ATARI: ',MAIN.ATARI,'..',MAIN.ATARI+.SIZEOF(MAIN.ATARI)-1
-   869 					eif
-   870
-   871 					ift .SIZEOF(MAIN.CRT) > 0
-   872 					.print 'CRT: ',MAIN.CRT,'..',MAIN.CRT+.SIZEOF(MAIN.CRT)-1
-   872 				CRT: $224F..$2270
-   873 					eif
-   874
-   875 					.print 'CODE: ',CODEORIGIN,'..',*-1
-   875 				CODE: $2000..$23E1
-   876
-   877 				; ------------------------------------------------------------
-   878
-   879 23E2			DATAORIGIN
-   880 23E2 28 00 18 00 2D 0C	.by  $28 $00 $18 $00 $2D $0C
-   881
-   882 = 0006			VARINITSIZE	= *-DATAORIGIN
-   883 = 001E			VARDATASIZE	= 30
+   863 = 23F0 00 20		DL8
+   863 = 23F2 CA 20		BASE
+   863 = 23F4 06 24		COLHEIGHT
+   863 				.endl							; MAIN
+   864
+   865 				; ------------------------------------------------------------
+   866 				; ------------------------------------------------------------
+   867
+   868 				.macro	UNITINITIALIZATION
+   869 				
+   870 					.ifdef MAIN.SYSTEM.@UnitInit
+   871 					jsr MAIN.SYSTEM.@UnitInit
+   872 					eif
+   873 				
+   874 					.ifdef MAIN.ATARI.@UnitInit
+   875 					jsr MAIN.ATARI.@UnitInit
+   876 					eif
+   877 				
+   878 					.ifdef MAIN.CRT.@UnitInit
+   879 					jsr MAIN.CRT.@UnitInit
+   880 					eif
+   881 				.endm
+   882
+   883 				; ------------------------------------------------------------
    884
-   885 = 2400			PROGRAMSTACK	= DATAORIGIN+VARDATASIZE
-   886
-   887 					.print 'DATA: ',DATAORIGIN,'..',PROGRAMSTACK
-   887 				DATA: $23E2..$2400
+   885 					ift .SIZEOF(MAIN.SYSTEM) > 0
+   886 					.print 'SYSTEM: ',MAIN.SYSTEM,'..',MAIN.SYSTEM+.SIZEOF(MAIN.SYSTEM)-1
+   886 				SYSTEM: $21FD..$224E
+   887 					eif
    888
-   889 02E0-02E1> CD 21			run START
-   890
-   891 				; ------------------------------------------------------------
+   889 					ift .SIZEOF(MAIN.ATARI) > 0
+   890 					.print 'ATARI: ',MAIN.ATARI,'..',MAIN.ATARI+.SIZEOF(MAIN.ATARI)-1
+   891 					eif
    892
-   893 				.macro	STATICDATA
-   894 				.by  $70 $70 $70 $4F $10 $80 $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
-   895 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
-   896 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
-   897 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
-   898 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $4F $00 $90 $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
-   899 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
-   900 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
-   901 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
-   902 				.by  $0F $0F $0F $0F $0F $0F $0F $41  $00 $20 $AA $96 $90 $90 $7A $7A  $6E $6E $5E $5E $56 $56 $52 $50
-   903 				.endm
-   904
-   905 					end
+   893 					ift .SIZEOF(MAIN.CRT) > 0
+   894 					.print 'CRT: ',MAIN.CRT,'..',MAIN.CRT+.SIZEOF(MAIN.CRT)-1
+   894 				CRT: $224F..$2270
+   895 					eif
+   896
+   897 					.print 'CODE: ',CODEORIGIN,'..',*-1
+   897 				CODE: $2000..$23F5
+   898
+   899 				; ------------------------------------------------------------
+   900
+   901 23F6			DATAORIGIN
+   902 23F6 28 00 18 00 2D 0C	.by  $28 $00 $18 $00 $2D $0C
+   903
+   904 = 0006			VARINITSIZE	= *-DATAORIGIN
+   905 = 001E			VARDATASIZE	= 30
+   906
+   907 = 2414			PROGRAMSTACK	= DATAORIGIN+VARDATASIZE
+   908
+   909 					.print 'DATA: ',DATAORIGIN,'..',PROGRAMSTACK
+   909 				DATA: $23F6..$2414
+   910
+   911 02E0-02E1> CD 21			run START
+   912
+   913 				; ------------------------------------------------------------
+   914
+   915 				.macro	STATICDATA
+   916 				.by  $70 $70 $70 $4F $10 $80 $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
+   917 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
+   918 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
+   919 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
+   920 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $4F $00 $90 $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
+   921 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
+   922 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
+   923 				.by  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F  $0F $0F $0F $0F $0F $0F $0F $0F
+   924 				.by  $0F $0F $0F $0F $0F $0F $0F $41  $00 $20 $AA $96 $90 $90 $7A $7A  $6E $6E $5E $5E $56 $56 $52 $50
+   925 				.endm
+   926
+   927 					end

@@ -679,26 +679,48 @@ l_00CA
 	sta START
 l_00F5
 
-; --- WhileProlog
-	jmp l_0116
-l_0117
-
-; optimize OK (slideshow.pas), line = 77
+; optimize OK (slideshow.pas), line = 76
 
 	lda I
-	cmp #$01
-	jne l_0129
+	jeq l_0120
 
-; optimize OK (slideshow.pas), line = 78
+; --- WhileProlog
+	jmp l_0123
+l_0124
+
+; optimize OK (slideshow.pas), line = 79
 
 	mwy P :bp2
 	ldy #$00
 	lda C
 	sta (:bp2),y
-	jmp l_0139
-l_0129
 
-; optimize OK (slideshow.pas), line = 81
+; optimize OK (slideshow.pas), line = 80
+
+	lda P
+	add #$28
+	sta P
+	scc
+	inc P+1
+
+; optimize FAIL (0, slideshow.pas), line = 81
+
+	inc START
+l_0123
+
+; optimize OK (slideshow.pas), line = 77
+
+	lda START
+	cmp STOP
+	jcc l_0124
+	jmp l_0146
+l_0120
+
+; --- WhileProlog
+	jmp l_0148
+l_0149
+
+; optimize OK (slideshow.pas), line = 85
 
 	mwy P :bp2
 	ldy #$00
@@ -709,9 +731,8 @@ l_0129
 	:4 asl @
 	ora :STACKORIGIN+9
 	sta (:bp2),y
-l_0139
 
-; optimize OK (slideshow.pas), line = 82
+; optimize OK (slideshow.pas), line = 86
 
 	lda P
 	add #$28
@@ -719,42 +740,43 @@ l_0139
 	scc
 	inc P+1
 
-; optimize FAIL (0, slideshow.pas), line = 83
+; optimize FAIL (0, slideshow.pas), line = 87
 
 	inc START
-l_0116
+l_0148
 
-; optimize OK (slideshow.pas), line = 76
+; optimize OK (slideshow.pas), line = 84
 
 	lda START
 	cmp STOP
-	jcc l_0117
+	jcc l_0149
+l_0146
 
-; optimize OK (slideshow.pas), line = 85
+; optimize OK (slideshow.pas), line = 90
 
 	mva STOP START
 
-; optimize OK (slideshow.pas), line = 86
+; optimize OK (slideshow.pas), line = 91
 
 	lda RND
 	and #$01
-	jeq l_0176
+	jeq l_0186
 	ldy C
 	lda adr.COLHEIGHT,y
 	sub #$01
 	sta adr.COLHEIGHT,y
-l_0176
+l_0186
 
-; optimize OK (slideshow.pas), line = 87
+; optimize OK (slideshow.pas), line = 92
 
 	lda RND
 	and #$01
-	jeq l_018D
+	jeq l_019D
 	ldy C
 	lda adr.COLHEIGHT,y
 	add #$01
 	sta adr.COLHEIGHT,y
-l_018D
+l_019D
 
 ; --- ForToDoEpilog
 	dec C
@@ -771,29 +793,29 @@ l_00B3
 	jpl l_008E
 l_009C
 
-; optimize FAIL ('SYSTEM.PAUSE_0060', slideshow.pas), line = 91
+; optimize FAIL ('SYSTEM.PAUSE_0060', slideshow.pas), line = 96
 
 	jsr SYSTEM.PAUSE_0060
 
-; optimize OK (slideshow.pas), line = 91
+; optimize OK (slideshow.pas), line = 96
 
 	mva #$22 ATARI.SDMCTL
 
-; optimize FAIL ('SYSTEM.PAUSE_0061', slideshow.pas), line = 92
+; optimize FAIL ('SYSTEM.PAUSE_0061', slideshow.pas), line = 97
 
 	inx
 	mva #$96 :STACKORIGIN,x
 	mva #$00 :STACKORIGIN+STACKWIDTH,x
 	jsr SYSTEM.PAUSE_0061
 
-; optimize FAIL ('CRT.KEYPRESSED', slideshow.pas), line = 93
+; optimize FAIL ('CRT.KEYPRESSED', slideshow.pas), line = 98
 
 	jsr CRT.KEYPRESSED
 	dex
 	lda :STACKORIGIN+1,x
 	jeq l_007A
 
-; optimize FAIL ('CRT.TEXTMODE', slideshow.pas), line = 94
+; optimize FAIL ('CRT.TEXTMODE', slideshow.pas), line = 99
 
 	inx
 	mva #$00 :STACKORIGIN,x
