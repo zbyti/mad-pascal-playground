@@ -5,59 +5,59 @@ mads 2.1.0
    101 				ZPAGE: $0080..$00D7
    102
    103 				.print 'RTLIB: ',RTLIB,'..',*-1
-   103 				RTLIB: $24EA..$2601
+   103 				RTLIB: $20F7..$219D
    104
    105 				; ------------------------------------------------------------
    106
-   107 2602			START
-   108 2602 BA				tsx
-   109 2603 8E 33 29			stx MAIN.@halt+1
+   107 219E			START
+   108 219E BA				tsx
+   109 219F 8E ED 24			stx MAIN.@halt+1
    110
    111 					.ifdef fmulinit
    112 					fmulinit
    113 					eif
    114
-   115 = 0000			VLEN	= VARDATASIZE-VARINITSIZE
-   116 = 31C1			VADR	= DATAORIGIN+VARINITSIZE
+   115 = 0006			VLEN	= VARDATASIZE-VARINITSIZE
+   116 = 2C31			VADR	= DATAORIGIN+VARINITSIZE
    117
    118 					ift VADR > $BFFF
    119 					ert 'Invalid memory address range ',VADR
    120 					eli (VLEN>0) && (VLEN<=256)
-   121 					ldx #256-VLEN
-   122 					lda #0
-   123 					sta:rne VADR+VLEN-256,x+
+   121 21A2 A2 FA			ldx #256-VLEN
+   122 21A4 A9 00			lda #0
+   123 21A6 9D 37 2B E8 D0 FA		sta:rne VADR+VLEN-256,x+
    124 					eli VLEN>0
    125 					@fill #VADR #VLEN #0
    126 					eif
    127
-   128 2606 A9 C1 85 82 A9 31 + 	mwa #PROGRAMSTACK psptr
+   128 21AC A9 37 85 82 A9 2C + 	mwa #PROGRAMSTACK psptr
    129
    130 					.ifdef MAIN.@DEFINES.ROMOFF
    131 					icl 'atari\romoff.asm'
    132 					.endif
    133
-   134 260E A2 0F			ldx #$0F					; DOS II+/D ParamStr
-   135 2610 BD 40 03 9D 36 29 + 	mva:rpl $340,x MAIN.IOCB@COPY,x-
+   134 21B4 A2 0F			ldx #$0F					; DOS II+/D ParamStr
+   135 21B6 BD 40 03 9D F0 24 + 	mva:rpl $340,x MAIN.IOCB@COPY,x-
    136
-   137 2619 E8				inx						; X = 0
-   138 261A 86 90			stx bp						; BP = 0
+   137 21BF E8				inx						; X = 0
+   138 21C0 86 90			stx bp						; BP = 0
    139
-   140 261C 8E 08 D2			stx audctl					; reset POKEY
-   141 261F A9 03			lda #3
-   142 2621 8D 0F D2			sta skctl
+   140 21C2 8E 08 D2			stx audctl					; reset POKEY
+   141 21C5 A9 03			lda #3
+   142 21C7 8D 0F D2			sta skctl
    143
-   144 2624 CA				dex						; X = 255
+   144 21CA CA				dex						; X = 255
    145
-   146 2625				UNITINITIALIZATION
+   146 21CB				UNITINITIALIZATION
 Macro: UNITINITIALIZATION [Source: depacker.a65]
    147
-   148 2625			.local	MAIN						; PROCEDURE
+   148 21CB			.local	MAIN						; PROCEDURE
    149
-   150 2625 4C BC 28			jmp l_04F1
+   150 21CB 4C 5D 24			jmp l_00FE
    151
    152 				; ------------------------------------------------------------
    153
-   154 2628			.local	SYSTEM						; UNIT
+   154 21CE			.local	SYSTEM						; UNIT
    155
    156 				; ------------------------------------------------------------
    157
@@ -108,27 +108,27 @@ Macro: UNITINITIALIZATION [Source: depacker.a65]
    202 = 0008			FMOPENWRITE	= $08
    203 = 0009			FMOPENAPPEND	= $09
    204 = 000C			FMOPENREADWRITE	= $0C
-   205 = 294A			SCREENWIDTH	= DATAORIGIN+$0000
-   206 = 294C			SCREENHEIGHT	= DATAORIGIN+$0002
-   207 = 294E			DATESEPARATOR	= DATAORIGIN+$0004
+   205 = 2500			SCREENWIDTH	= DATAORIGIN+$0000
+   206 = 2502			SCREENHEIGHT	= DATAORIGIN+$0002
+   207 = 2504			DATESEPARATOR	= DATAORIGIN+$0004
    208 = D014			TVSYSTEM	= $D014
    209 = 02C0			adr.PALETTE	= $02C0
-   210 2628			.var PALETTE	= adr.PALETTE .word
+   210 21CE			.var PALETTE	= adr.PALETTE .word
    211 = D012			adr.HPALETTE	= $D012
-   212 2628			.var HPALETTE	= adr.HPALETTE .word
-   213 = 294F			FILEMODE	= DATAORIGIN+$0005
-   214 = 2950			GRAPHMODE	= DATAORIGIN+$0006
-   215 = 2951			IORESULT	= DATAORIGIN+$0007
-   216 = 2952			EOLN	= DATAORIGIN+$0008
-   217 = 2953			RNDSEED	= DATAORIGIN+$0009
+   212 21CE			.var HPALETTE	= adr.HPALETTE .word
+   213 = 2505			FILEMODE	= DATAORIGIN+$0005
+   214 = 2506			GRAPHMODE	= DATAORIGIN+$0006
+   215 = 2507			IORESULT	= DATAORIGIN+$0007
+   216 = 2508			EOLN	= DATAORIGIN+$0008
+   217 = 2509			RNDSEED	= DATAORIGIN+$0009
    218
-   219 = 2628 C0 02		PALETTE
-   219 = 262A 12 D0		HPALETTE
+   219 = 21CE C0 02		PALETTE
+   219 = 21D0 12 D0		HPALETTE
    219 				.endl							; UNIT SYSTEM
    220
    221 				; ------------------------------------------------------------
    222
-   223 262C			.local	ATARI						; UNIT
+   223 21D2			.local	ATARI						; UNIT
    224
    225 				; ------------------------------------------------------------
    226
@@ -225,29 +225,29 @@ Macro: UNITINITIALIZATION [Source: depacker.a65]
    317
    318 				; ------------------------------------------------------------
    319
-   320 262C			.local	CRT						; UNIT
+   320 21D2			.local	CRT						; UNIT
    321
-   322 262C			.local	READKEY						; FUNCTION | ASSEMBLER
+   322 21D2			.local	READKEY						; FUNCTION | ASSEMBLER
    323
    324 				; ---------------------  ASM Block 049  ---------------------
    325
-   326 262C 8A 48			txa:pha
+   326 21D2 8A 48			txa:pha
    327
-   328 262E 20 EA 24			@GetKey
+   328 21D4 20 23 21			@GetKey
    329
-   330 2631 8D 56 29			sta Result
+   330 21D7 8D 0C 25			sta Result
    331
-   332 2634 68 AA			pla:tax
+   332 21DA 68 AA			pla:tax
    333
-   334 2636			@exit
+   334 21DC			@exit
    335
    336 				; ------------------------------------------------------------
    337
    338 				; Push BYTE / CHAR / SHORTINT / BOOLEAN
    339 				; as Pointer
    340
-   341 2636 E8				inx
-   342 2637 AD 56 29 95 98		mva RESULT :STACKORIGIN,x
+   341 21DC E8				inx
+   342 21DD AD 0C 25 95 98		mva RESULT :STACKORIGIN,x
    343
    344 					.ifdef @new
    345 					lda <@VarData
@@ -259,1099 +259,1069 @@ Macro: UNITINITIALIZATION [Source: depacker.a65]
    351
    352 				; ------------------------------------------------------------
    353
-   354 = 2956			RESULT	= DATAORIGIN+$000C
+   354 = 250C			RESULT	= DATAORIGIN+$000C
    355
-   356 = 2956			@VarData	= RESULT
+   356 = 250C			@VarData	= RESULT
    357 = 0001			@VarDataSize	= 1
    358
-   359 263C 60				rts						; ret
+   359 21E2 60				rts						; ret
    360 				.endl
    361
-   362 263D			.local	TEXTBACKGROUND					; PROCEDURE | ASSEMBLER
+   362 21E3			.local	TEXTMODE					; PROCEDURE | ASSEMBLER
    363
    364 				; ------------------------------------------------------------
    365
    366 				; Generate Assignment for BYTE / CHAR / SHORTINT / BOOLEAN
    367 				; as Pointer
-   368 263D B5 98 8D 57 29		mva :STACKORIGIN,x A
-   369 2642 CA				dex
+   368 21E3 B5 98 8D 0D 25		mva :STACKORIGIN,x MODE
+   369 21E8 CA				dex
    370
-   371 				; ---------------------  ASM Block 050  ---------------------
+   371 				; ---------------------  ASM Block 059  ---------------------
    372
-   373 2643 AD 57 29 8D C6 02 + 	mwa a colpf2s
+   373 21E9 8A 48			txa:pha
    374
-   375
-   376 				; ------------------------------------------------------------
-   377
-   378 = 2957			A	= DATAORIGIN+$000D
+   375 21EB 20 F7 20			@clrscr
+   376
+   377 21EE 68 AA			pla:tax
+   378
    379
-   380 = 2957			@VarData	= A
-   381 = 0001			@VarDataSize	= 1
-   382
-   383 264F			@exit
-   384 					.ifdef @new
-   385 					lda <@VarData
-   386 					sta :ztmp
-   387 					lda >@VarData
-   388 					ldy #@VarDataSize-1
-   389 					jmp @FreeMem
-   390 					els
-   391 264F 60				rts						; ret
-   392 					eif
-   393 				.endl
-   394
-   395 				; ------------------------------------------------------------
-   396
-   397 = 2955			TEXTATTR	= DATAORIGIN+$000B
-   398 = D01F			CONSOL	= $D01F
-   399 = 0000			CN_START_SELECT_OPTION	= $00
-   400 = 0001			CN_SELECT_OPTION	= $01
-   401 = 0002			CN_START_OPTION	= $02
-   402 = 0003			CN_OPTION	= $03
-   403 = 0004			CN_START_SELECT	= $04
-   404 = 0005			CN_SELECT	= $05
-   405 = 0006			CN_START	= $06
-   406 = 0007			CN_NONE	= $07
-   407 = 0000			BW40	= $00
-   408 = 0001			CO40	= $01
-   409 = 0002			BW80	= $02
-   410 = 0003			CO80	= $03
-   411 = 0007			MONO	= $07
-   412 = 0001			C40	= $01
-   413 = 0003			C80	= $03
-   414 = 0000			BLACK	= $00
-   415 = 0001			BLUE	= $01
-   416 = 0002			GREEN	= $02
-   417 = 0003			CYAN	= $03
-   418 = 0004			RED	= $04
-   419 = 0005			MAGENTA	= $05
-   420 = 0006			BROWN	= $06
-   421 = 0007			LIGHTGRAY	= $07
-   422 = 0008			DARKGRAY	= $08
-   423 = 0009			LIGHTBLUE	= $09
-   424 = 000A			LIGHTGREEN	= $0A
-   425 = 000B			LIGHTCYAN	= $0B
-   426 = 000C			LIGHTRED	= $0C
-   427 = 000D			LIGHTMAGENTA	= $0D
-   428 = 000E			YELLOW	= $0E
-   429 = 000F			WHITE	= $0F
-   430 = 0080			BLINK	= $80
-   431
-   432 				.endl							; UNIT CRT
-   433
-   434 				; ------------------------------------------------------------
+   380 				; ------------------------------------------------------------
+   381
+   382 = 250D			MODE	= DATAORIGIN+$000D
+   383
+   384 = 250D			@VarData	= MODE
+   385 = 0001			@VarDataSize	= 1
+   386
+   387 21F0			@exit
+   388 					.ifdef @new
+   389 					lda <@VarData
+   390 					sta :ztmp
+   391 					lda >@VarData
+   392 					ldy #@VarDataSize-1
+   393 					jmp @FreeMem
+   394 					els
+   395 21F0 60				rts						; ret
+   396 					eif
+   397 				.endl
+   398
+   399 				; ------------------------------------------------------------
+   400
+   401 = 250B			TEXTATTR	= DATAORIGIN+$000B
+   402 = D01F			CONSOL	= $D01F
+   403 = 0000			CN_START_SELECT_OPTION	= $00
+   404 = 0001			CN_SELECT_OPTION	= $01
+   405 = 0002			CN_START_OPTION	= $02
+   406 = 0003			CN_OPTION	= $03
+   407 = 0004			CN_START_SELECT	= $04
+   408 = 0005			CN_SELECT	= $05
+   409 = 0006			CN_START	= $06
+   410 = 0007			CN_NONE	= $07
+   411 = 0000			BW40	= $00
+   412 = 0001			CO40	= $01
+   413 = 0002			BW80	= $02
+   414 = 0003			CO80	= $03
+   415 = 0007			MONO	= $07
+   416 = 0001			C40	= $01
+   417 = 0003			C80	= $03
+   418 = 0000			BLACK	= $00
+   419 = 0001			BLUE	= $01
+   420 = 0002			GREEN	= $02
+   421 = 0003			CYAN	= $03
+   422 = 0004			RED	= $04
+   423 = 0005			MAGENTA	= $05
+   424 = 0006			BROWN	= $06
+   425 = 0007			LIGHTGRAY	= $07
+   426 = 0008			DARKGRAY	= $08
+   427 = 0009			LIGHTBLUE	= $09
+   428 = 000A			LIGHTGREEN	= $0A
+   429 = 000B			LIGHTCYAN	= $0B
+   430 = 000C			LIGHTRED	= $0C
+   431 = 000D			LIGHTMAGENTA	= $0D
+   432 = 000E			YELLOW	= $0E
+   433 = 000F			WHITE	= $0F
+   434 = 0080			BLINK	= $80
    435
-   436 2650			.local	TYPES						; UNIT
+   436 				.endl							; UNIT CRT
    437
    438 				; ------------------------------------------------------------
    439
-   440 				.endl							; UNIT TYPES
+   440 21F1			.local	TYPES						; UNIT
    441
    442 				; ------------------------------------------------------------
    443
-   444 2650			.local	FASTGRAPH					; UNIT
+   444 				.endl							; UNIT TYPES
    445
-   446 2650			.local	SETCOLOR					; PROCEDURE | ASSEMBLER
+   446 				; ------------------------------------------------------------
    447
-   448 				; ------------------------------------------------------------
+   448 21F1			.local	FASTGRAPH					; UNIT
    449
-   450 				; Generate Assignment for BYTE / CHAR / SHORTINT / BOOLEAN
-   451 				; as Pointer
-   452 2650 B5 98 8D 74 30		mva :STACKORIGIN,x COLOR
-   453 2655 CA				dex
-   454
-   455 				; ---------------------  ASM Block 061  ---------------------
-   456
-   457 2656 8D 61 29			sta GetColor
+   450 21F1			.local	SETCOLOR					; PROCEDURE | ASSEMBLER
+   451
+   452 				; ------------------------------------------------------------
+   453
+   454 				; Generate Assignment for BYTE / CHAR / SHORTINT / BOOLEAN
+   455 				; as Pointer
+   456 21F1 B5 98 8D 2A 2C		mva :STACKORIGIN,x COLOR
+   457 21F6 CA				dex
    458
-   459 2659 4C 9F 26			jmp gr8
-   460 = 265A			mode	equ *-2
-   461
-   462 265C AD 74 30		gr15	lda color
-   463 265F 29 03			and #3
-   464 2661 A8				tay
+   459 				; ---------------------  ASM Block 061  ---------------------
+   460
+   461 21F7 8D 17 25			sta GetColor
+   462
+   463 21FA 4C 40 22			jmp gr8
+   464 = 21FB			mode	equ *-2
    465
-   466 2662 4C A5 26			jmp toend
-   467
-   468 2665 8A 48		gr9	txa:pha
+   466 21FD AD 2A 2C		gr15	lda color
+   467 2200 29 03			and #3
+   468 2202 A8				tay
    469
-   470 2667 AD 74 30			lda color
-   471 266A 29 0F			and #$0f
-   472 266C 8D 98 26			sta c9+1
-   473 266F 0A 0A 0A 0A			:4 asl @
-   474 2673 8D 97 26			sta c9
-   475
-   476 2676 A0 00			ldy #0
-   477 2678 98			lp	tya
-   478 2679 29 01			and #1
-   479 267B AA				tax
-   480 267C BD 99 26			lda c9_,x
-   481 267F 99 6E 29			sta adr.color_bits,y
-   482 2682 BD 97 26			lda c9,x
-   483 2685 99 6E 2A			sta adr.color_bits+$100,y
-   484 2688 C8				iny
-   485 2689 D0 ED			bne lp
-   486
-   487 268B 68 AA			pla:tax
-   488
-   489 268D AC 74 30			ldy color
-   490 2690 F0 13			beq toend
-   491
-   492 2692 A0 01			ldy #1
-   493 2694 4C A5 26			jmp toend
-   494
-   495 2697 00 00		c9	dta 0,0
-   496 2699 0F F0		c9_	dta $0f, $f0
-   497
-   498 269B 29 2A 2B 2C		colorHi	dta h(adr.color_bits, adr.color_bits+$100, adr.color_bits+$200, adr.color_bits+$300)
-   499
-   500 269F AD 74 30		gr8	lda color
-   501 26A2 29 01			and #1
-   502 26A4 A8				tay
+   470 2203 4C 46 22			jmp toend
+   471
+   472 2206 8A 48		gr9	txa:pha
+   473
+   474 2208 AD 2A 2C			lda color
+   475 220B 29 0F			and #$0f
+   476 220D 8D 39 22			sta c9+1
+   477 2210 0A 0A 0A 0A			:4 asl @
+   478 2214 8D 38 22			sta c9
+   479
+   480 2217 A0 00			ldy #0
+   481 2219 98			lp	tya
+   482 221A 29 01			and #1
+   483 221C AA				tax
+   484 221D BD 3A 22			lda c9_,x
+   485 2220 99 24 25			sta adr.color_bits,y
+   486 2223 BD 38 22			lda c9,x
+   487 2226 99 24 26			sta adr.color_bits+$100,y
+   488 2229 C8				iny
+   489 222A D0 ED			bne lp
+   490
+   491 222C 68 AA			pla:tax
+   492
+   493 222E AC 2A 2C			ldy color
+   494 2231 F0 13			beq toend
+   495
+   496 2233 A0 01			ldy #1
+   497 2235 4C 46 22			jmp toend
+   498
+   499 2238 00 00		c9	dta 0,0
+   500 223A 0F F0		c9_	dta $0f, $f0
+   501
+   502 223C 25 26 27 28		colorHi	dta h(adr.color_bits, adr.color_bits+$100, adr.color_bits+$200, adr.color_bits+$300)
    503
-   504 26A5			toend
-   505 					.ifdef fLine
-   506 					lda colorHi,y
-   507 					sta fLine.urr_color+2
-   508 					sta fLine.uur_color+2
-   509 					sta fLine.drr_color+2
-   510 					sta fLine.ddr_color+2
-   511
-   512 					lda #$1d		; ora *,x
-   513 					cpy #0
-   514 					sne
-   515 					lda #$3d		; and *,x
-   516
-   517 					sta fLine.urr_color
-   518 					sta fLine.uur_color
-   519 					sta fLine.drr_color
-   520 					sta fLine.ddr_color
-   521 					.endif
-   522
-   523 					.ifdef PutPixel
-   524 26A5 B9 9B 26 8D 21 27		mva colorHi,y PutPixel.acol+2
-   525
-   526 26AB A9 1D			lda #$1d		; ora *,x
-   527 26AD C0 00			cpy #0
-   528 26AF D0 02			sne
-   529 26B1 A9 3D			lda #$3d		; and *,x
-   530
-   531 26B3 8D 1F 27			sta PutPixel.acol
-   532 					.endif
-   533
+   504 2240 AD 2A 2C		gr8	lda color
+   505 2243 29 01			and #1
+   506 2245 A8				tay
+   507
+   508 2246			toend
+   509 					.ifdef fLine
+   510 					lda colorHi,y
+   511 					sta fLine.urr_color+2
+   512 					sta fLine.uur_color+2
+   513 					sta fLine.drr_color+2
+   514 					sta fLine.ddr_color+2
+   515
+   516 					lda #$1d		; ora *,x
+   517 					cpy #0
+   518 					sne
+   519 					lda #$3d		; and *,x
+   520
+   521 					sta fLine.urr_color
+   522 					sta fLine.uur_color
+   523 					sta fLine.drr_color
+   524 					sta fLine.ddr_color
+   525 					.endif
+   526
+   527 					.ifdef PutPixel
+   528 2246 B9 3C 22 8D C2 22		mva colorHi,y PutPixel.acol+2
+   529
+   530 224C A9 1D			lda #$1d		; ora *,x
+   531 224E C0 00			cpy #0
+   532 2250 D0 02			sne
+   533 2252 A9 3D			lda #$3d		; and *,x
    534
-   535 				; ------------------------------------------------------------
-   536
-   537 = 3074			COLOR	= DATAORIGIN+$072A
+   535 2254 8D C0 22			sta PutPixel.acol
+   536 					.endif
+   537
    538
-   539 = 3074			@VarData	= COLOR
-   540 = 0001			@VarDataSize	= 1
-   541
-   542 26B6			@exit
-   543 					.ifdef @new
-   544 					lda <@VarData
-   545 					sta :ztmp
-   546 					lda >@VarData
-   547 					ldy #@VarDataSize-1
-   548 					jmp @FreeMem
-   549 					els
-   550 26B6 60				rts						; ret
-   551 					eif
-   552 				.endl
-   553
-   554 26B7			.local	PUTPIXEL					; PROCEDURE | ASSEMBLER | REGISTER
-   555
-   556 				; ------------------------------------------------------------
+   539 				; ------------------------------------------------------------
+   540
+   541 = 2C2A			COLOR	= DATAORIGIN+$072A
+   542
+   543 = 2C2A			@VarData	= COLOR
+   544 = 0001			@VarDataSize	= 1
+   545
+   546 2257			@exit
+   547 					.ifdef @new
+   548 					lda <@VarData
+   549 					sta :ztmp
+   550 					lda >@VarData
+   551 					ldy #@VarDataSize-1
+   552 					jmp @FreeMem
+   553 					els
+   554 2257 60				rts						; ret
+   555 					eif
+   556 				.endl
    557
-   558 				; Generate Assignment for WORD / SMALLINT / SHORTREAL / POINTER
-   559 				; as Pointer
-   560 26B7 B5 98 85 8C			mva :STACKORIGIN,x Y
-   561 26BB B5 A8 85 8D			mva :STACKORIGIN+STACKWIDTH,x Y+1
-   562 26BF CA				dex
-   563
-   564 				; ------------------------------------------------------------
-   565
-   566 				; Generate Assignment for WORD / SMALLINT / SHORTREAL / POINTER
-   567 				; as Pointer
-   568 26C0 B5 98 85 88			mva :STACKORIGIN,x X
-   569 26C4 B5 A8 85 89			mva :STACKORIGIN+STACKWIDTH,x X+1
-   570 26C8 CA				dex
-   571
-   572 				; ---------------------  ASM Block 062  ---------------------
-   573
-   574 26C9 8E 25 27			stx @sp
+   558 2258			.local	PUTPIXEL					; PROCEDURE | ASSEMBLER | REGISTER
+   559
+   560 				; ------------------------------------------------------------
+   561
+   562 				; Generate Assignment for WORD / SMALLINT / SHORTREAL / POINTER
+   563 				; as Pointer
+   564 2258 B5 98 85 8C			mva :STACKORIGIN,x Y
+   565 225C B5 A8 85 8D			mva :STACKORIGIN+STACKWIDTH,x Y+1
+   566 2260 CA				dex
+   567
+   568 				; ------------------------------------------------------------
+   569
+   570 				; Generate Assignment for WORD / SMALLINT / SHORTREAL / POINTER
+   571 				; as Pointer
+   572 2261 B5 98 85 88			mva :STACKORIGIN,x X
+   573 2265 B5 A8 85 89			mva :STACKORIGIN+STACKWIDTH,x X+1
+   574 2269 CA				dex
    575
-   576 26CC A5 8D			lda y+1
-   577 26CE 30 54			bmi stop
-   578 26D0 CD 4D 29			cmp MAIN.SYSTEM.ScreenHeight+1
-   579 26D3 D0 05			bne sk0
-   580 26D5 A5 8C			lda y
-   581 26D7 CD 4C 29			cmp MAIN.SYSTEM.ScreenHeight
-   582 26DA			sk0
-   583 26DA B0 48			bcs stop
-   584
-   585 26DC A5 89			lda x+1
-   586 26DE 30 44			bmi stop
-   587 26E0 CD 4B 29			cmp MAIN.SYSTEM.ScreenWidth+1
-   588 26E3 D0 05			bne sk1
-   589 26E5 A5 88			lda x
-   590 26E7 CD 4A 29			cmp MAIN.SYSTEM.ScreenWidth
-   591 26EA			sk1
-   592 26EA B0 38			bcs stop
-   593
-   594 26EC A4 8C			ldy y
-   595 26EE B9 6E 2D			lda adr.lineLo,y
-   596 26F1 18 69 00			add #0
-   597 = 26F3			lfb	equ *-1
-   598 26F4 85 92			sta :bp2
-   599
-   600 26F6 B9 6E 2E			lda adr.lineHi,y
-   601 26F9 69 00			adc #0
-   602 = 26FA			hfb	equ *-1
-   603 26FB 85 93			sta :bp2+1
-   604
-   605 26FD 4C 14 27			jmp gr8
-   606 = 26FE			mode	equ *-2
-   607
-   608 				; ----------------------------
-   609
-   610 2700 A6 88		gr15	ldx x
-   611 2702 BC 6E 2F			ldy adr.div4,x
-   612
-   613 2705 4C 1D 27			jmp plot
-   614
-   615 				; ----------------------------
+   576 				; ---------------------  ASM Block 062  ---------------------
+   577
+   578 226A 8E C6 22			stx @sp
+   579
+   580 226D A5 8D			lda y+1
+   581 226F 30 54			bmi stop
+   582 2271 CD 03 25			cmp MAIN.SYSTEM.ScreenHeight+1
+   583 2274 D0 05			bne sk0
+   584 2276 A5 8C			lda y
+   585 2278 CD 02 25			cmp MAIN.SYSTEM.ScreenHeight
+   586 227B			sk0
+   587 227B B0 48			bcs stop
+   588
+   589 227D A5 89			lda x+1
+   590 227F 30 44			bmi stop
+   591 2281 CD 01 25			cmp MAIN.SYSTEM.ScreenWidth+1
+   592 2284 D0 05			bne sk1
+   593 2286 A5 88			lda x
+   594 2288 CD 00 25			cmp MAIN.SYSTEM.ScreenWidth
+   595 228B			sk1
+   596 228B B0 38			bcs stop
+   597
+   598 228D A4 8C			ldy y
+   599 228F B9 24 29			lda adr.lineLo,y
+   600 2292 18 69 00			add #0
+   601 = 2294			lfb	equ *-1
+   602 2295 85 92			sta :bp2
+   603
+   604 2297 B9 24 2A			lda adr.lineHi,y
+   605 229A 69 00			adc #0
+   606 = 229B			hfb	equ *-1
+   607 229C 85 93			sta :bp2+1
+   608
+   609 229E 4C B5 22			jmp gr8
+   610 = 229F			mode	equ *-2
+   611
+   612 				; ----------------------------
+   613
+   614 22A1 A6 88		gr15	ldx x
+   615 22A3 BC 24 2B			ldy adr.div4,x
    616
-   617 2708 A5 88		gr9	lda x
-   618 270A 4A				lsr @
-   619 270B A8				tay
-   620 270C A5 88			lda x
-   621 270E 29 01			and #1
-   622 2710 AA				tax
-   623
-   624 2711 4C 1D 27			jmp plot
-   625
-   626 				; ----------------------------
+   617 22A6 4C BE 22			jmp plot
+   618
+   619 				; ----------------------------
+   620
+   621 22A9 A5 88		gr9	lda x
+   622 22AB 4A				lsr @
+   623 22AC A8				tay
+   624 22AD A5 88			lda x
+   625 22AF 29 01			and #1
+   626 22B1 AA				tax
    627
-   628 2714 A5 88		gr8	lda x
-   629 2716 AA				tax
-   630
-   631 2717 46 89			lsr x+1
-   632 2719 6A				ror @
-   633
-   634 271A 4A 4A			:2 lsr @
-   635 271C A8				tay
-   636
-   637 271D B1 92		plot	lda (:bp2),y
-   638 271F 3D 6E 29		acol	and adr.color_bits,x
-   639 2722 91 92			sta (:bp2),y
+   628 22B2 4C BE 22			jmp plot
+   629
+   630 				; ----------------------------
+   631
+   632 22B5 A5 88		gr8	lda x
+   633 22B7 AA				tax
+   634
+   635 22B8 46 89			lsr x+1
+   636 22BA 6A				ror @
+   637
+   638 22BB 4A 4A			:2 lsr @
+   639 22BD A8				tay
    640
-   641 2724 A2 00		stop	ldx #0
-   642 = 2725			@sp	equ *-1
-   643
+   641 22BE B1 92		plot	lda (:bp2),y
+   642 22C0 3D 24 25		acol	and adr.color_bits,x
+   643 22C3 91 92			sta (:bp2),y
    644
-   645 				; ------------------------------------------------------------
-   646
-   647 = 0088			X	= edx
-   648 = 008C			Y	= ecx
-   649 2726			@exit
-   650 					.ifdef @new
-   651 					lda <@VarData
-   652 					sta :ztmp
-   653 					lda >@VarData
-   654 					ldy #@VarDataSize-1
-   655 					jmp @FreeMem
-   656 					els
-   657 2726 60				rts						; ret
-   658 					eif
-   659 				.endl
-   660
-   661 2727			.local	SETACTIVEBUFFER_0576				; PROCEDURE | ASSEMBLER | OVERLOAD
-   662
-   663 				; ------------------------------------------------------------
+   645 22C5 A2 00		stop	ldx #0
+   646 = 22C6			@sp	equ *-1
+   647
+   648
+   649 				; ------------------------------------------------------------
+   650
+   651 = 0088			X	= edx
+   652 = 008C			Y	= ecx
+   653 22C7			@exit
+   654 					.ifdef @new
+   655 					lda <@VarData
+   656 					sta :ztmp
+   657 					lda >@VarData
+   658 					ldy #@VarDataSize-1
+   659 					jmp @FreeMem
+   660 					els
+   661 22C7 60				rts						; ret
+   662 					eif
+   663 				.endl
    664
-   665 				; Generate Assignment for WORD / SMALLINT / SHORTREAL / POINTER
-   666 				; as Pointer
-   667 2727 B5 98 8D 75 30		mva :STACKORIGIN,x A
-   668 272C B5 A8 8D 76 30		mva :STACKORIGIN+STACKWIDTH,x A+1
-   669 2731 CA				dex
-   670
-   671 				; ---------------------  ASM Block 068  ---------------------
-   672
-   673 2732 AD 75 30			lda a
-   674 2735 AC 76 30			ldy a+1
-   675
-   676 2738 8D 72 30			sta VideoRam
-   677 273B 8C 73 30			sty VideoRam+1
-   678
-   679 					.ifdef PutPixel
-   680 273E 8D F3 26			sta PutPixel.lfb
-   681 2741 8C FA 26			sty PutPixel.hfb
-   682 					eif
-   683
-   684 					.ifdef GetPixel
-   685 					sta GetPixel.lfb
-   686 					sty GetPixel.hfb
-   687 					eif
-   688
-   689 					.ifdef HLine
-   690 					sta HLine.lfb
-   691 					sty HLine.hfb
-   692 					eif
-   693
-   694 					.ifdef fLine
-   695 					sta fLine.lfb
-   696 					sty fLine.hfb
-   697 					eif
-   698
-   699
-   700 				; ------------------------------------------------------------
-   701
-   702 = 3075			A	= DATAORIGIN+$072B
+   665 22C8			.local	SETACTIVEBUFFER_0183				; PROCEDURE | ASSEMBLER | OVERLOAD
+   666
+   667 				; ------------------------------------------------------------
+   668
+   669 				; Generate Assignment for WORD / SMALLINT / SHORTREAL / POINTER
+   670 				; as Pointer
+   671 22C8 B5 98 8D 2B 2C		mva :STACKORIGIN,x A
+   672 22CD B5 A8 8D 2C 2C		mva :STACKORIGIN+STACKWIDTH,x A+1
+   673 22D2 CA				dex
+   674
+   675 				; ---------------------  ASM Block 068  ---------------------
+   676
+   677 22D3 AD 2B 2C			lda a
+   678 22D6 AC 2C 2C			ldy a+1
+   679
+   680 22D9 8D 28 2C			sta VideoRam
+   681 22DC 8C 29 2C			sty VideoRam+1
+   682
+   683 					.ifdef PutPixel
+   684 22DF 8D 94 22			sta PutPixel.lfb
+   685 22E2 8C 9B 22			sty PutPixel.hfb
+   686 					eif
+   687
+   688 					.ifdef GetPixel
+   689 					sta GetPixel.lfb
+   690 					sty GetPixel.hfb
+   691 					eif
+   692
+   693 					.ifdef HLine
+   694 					sta HLine.lfb
+   695 					sty HLine.hfb
+   696 					eif
+   697
+   698 					.ifdef fLine
+   699 					sta fLine.lfb
+   700 					sty fLine.hfb
+   701 					eif
+   702
    703
-   704 = 3075			@VarData	= A
-   705 = 0002			@VarDataSize	= 2
-   706
-   707 2744			@exit
-   708 					.ifdef @new
-   709 					lda <@VarData
-   710 					sta :ztmp
-   711 					lda >@VarData
-   712 					ldy #@VarDataSize-1
-   713 					jmp @FreeMem
-   714 					els
-   715 2744 60				rts						; ret
-   716 					eif
-   717 				.endl
-   718
-   719 2745			.local	INITGRAPH_057A					; PROCEDURE | OVERLOAD
-   720
-   721 				; ------------------------------------------------------------
+   704 				; ------------------------------------------------------------
+   705
+   706 = 2C2B			A	= DATAORIGIN+$072B
+   707
+   708 = 2C2B			@VarData	= A
+   709 = 0002			@VarDataSize	= 2
+   710
+   711 22E5			@exit
+   712 					.ifdef @new
+   713 					lda <@VarData
+   714 					sta :ztmp
+   715 					lda >@VarData
+   716 					ldy #@VarDataSize-1
+   717 					jmp @FreeMem
+   718 					els
+   719 22E5 60				rts						; ret
+   720 					eif
+   721 				.endl
    722
-   723 				; Generate Assignment for BYTE / CHAR / SHORTINT / BOOLEAN
-   724 				; as Pointer
-   725 2745 B5 98 8D 77 30		mva :STACKORIGIN,x MODE
-   726 274A CA				dex
-   727
-   728 				; optimize OK (FASTGRAPH), line = 966
-   729
-   730 274B AD 77 30 8D 50 29		mva MODE SYSTEM.GRAPHMODE
+   723 22E6			.local	INITGRAPH_0187					; PROCEDURE | OVERLOAD
+   724
+   725 				; ------------------------------------------------------------
+   726
+   727 				; Generate Assignment for BYTE / CHAR / SHORTINT / BOOLEAN
+   728 				; as Pointer
+   729 22E6 B5 98 8D 2D 2C		mva :STACKORIGIN,x MODE
+   730 22EB CA				dex
    731
-   732 				; optimize OK (FASTGRAPH), line = 968
+   732 				; optimize OK (FASTGRAPH), line = 966
    733
-   734 2751 AD 77 30			lda MODE
-   735 2754 29 0F			and #$0F
-   736 2756 8D 78 30			sta WIDTH
+   734 22EC AD 2D 2C 8D 06 25		mva MODE SYSTEM.GRAPHMODE
+   735
+   736 				; optimize OK (FASTGRAPH), line = 968
    737
-   738 				; ------------------------------------------------------------
-   739
-   740 				; Push BYTE / CHAR / SHORTINT / BOOLEAN
-   741 				; as Pointer
-   742
-   743 2759 E8				inx
-   744 275A AD 78 30 95 98		mva WIDTH :STACKORIGIN,x
-   745
-   746 				; GenerateCaseProlog
-   747 275F CA				dex
-   748
-   749 				; GenerateCaseEqualityCheck
-   750 2760 B5 99			lda :STACKORIGIN+1,x
-   751 2762 C9 06			cmp #$06
-   752 2764 F0 04			beq @+
-   753
-   754 				; GenerateCaseEqualityCheck
-   755 2766 C9 08			cmp #$08
-   756 2768 D0 17			jne l_059E
-   757 276A			@
-   758
-   759 				; ---------------------  ASM Block 069  ---------------------
-   760
-   761 					.ifdef SetColor
-   762 276A A9 9F 8D 5A 26 A9 + 	mwa #SetColor.gr8 SetColor.mode
-   763 					.endif
+   738 22F2 AD 2D 2C			lda MODE
+   739 22F5 29 0F			and #$0F
+   740 22F7 8D 2E 2C			sta WIDTH
+   741
+   742 				; ------------------------------------------------------------
+   743
+   744 				; Push BYTE / CHAR / SHORTINT / BOOLEAN
+   745 				; as Pointer
+   746
+   747 22FA E8				inx
+   748 22FB AD 2E 2C 95 98		mva WIDTH :STACKORIGIN,x
+   749
+   750 				; GenerateCaseProlog
+   751 2300 CA				dex
+   752
+   753 				; GenerateCaseEqualityCheck
+   754 2301 B5 99			lda :STACKORIGIN+1,x
+   755 2303 C9 06			cmp #$06
+   756 2305 F0 04			beq @+
+   757
+   758 				; GenerateCaseEqualityCheck
+   759 2307 C9 08			cmp #$08
+   760 2309 D0 17			jne l_01AB
+   761 230B			@
+   762
+   763 				; ---------------------  ASM Block 069  ---------------------
    764
-   765 					.ifdef PutPixel
-   766 2774 A9 14 8D FE 26 A9 + 	mwa #PutPixel.gr8 PutPixel.mode
+   765 					.ifdef SetColor
+   766 230B A9 40 8D FB 21 A9 + 	mwa #SetColor.gr8 SetColor.mode
    767 					.endif
    768
-   769 					.ifdef GetPixel
-   770 					mwa #GetPixel.gr8 GetPixel.mode
+   769 					.ifdef PutPixel
+   770 2315 A9 B5 8D 9F 22 A9 + 	mwa #PutPixel.gr8 PutPixel.mode
    771 					.endif
    772
-   773
-   774 				; GenerateCaseStatementEpilog
-   775 277E 4C B5 27			jmp a_0002
-   776 2781			l_059E
+   773 					.ifdef GetPixel
+   774 					mwa #GetPixel.gr8 GetPixel.mode
+   775 					.endif
+   776
    777
-   778 2781 B5 99			lda :STACKORIGIN+1,x
-   779 2783 18				clc						; clear carry for add
-   780 2784 69 F4			adc #$FF-$0B					; make m = $FF
-   781 2786 69 03			adc #$0B-$09+1					; carry set if in range n to m
-   782 2788 90 17			jcc l_05A7
-   783 278A			@
-   784
-   785 				; ---------------------  ASM Block 070  ---------------------
-   786
-   787 					.ifdef SetColor
-   788 278A A9 65 8D 5A 26 A9 + 	mwa #SetColor.gr9 SetColor.mode
-   789 					.endif
+   778 				; GenerateCaseStatementEpilog
+   779 231F 4C 56 23			jmp a_0002
+   780 2322			l_01AB
+   781
+   782 2322 B5 99			lda :STACKORIGIN+1,x
+   783 2324 18				clc						; clear carry for add
+   784 2325 69 F4			adc #$FF-$0B					; make m = $FF
+   785 2327 69 03			adc #$0B-$09+1					; carry set if in range n to m
+   786 2329 90 17			jcc l_01B4
+   787 232B			@
+   788
+   789 				; ---------------------  ASM Block 070  ---------------------
    790
-   791 					.ifdef PutPixel
-   792 2794 A9 08 8D FE 26 A9 + 	mwa #PutPixel.gr9 PutPixel.mode
+   791 					.ifdef SetColor
+   792 232B A9 06 8D FB 21 A9 + 	mwa #SetColor.gr9 SetColor.mode
    793 					.endif
    794
-   795 					.ifdef GetPixel
-   796 					mwa #GetPixel.gr9 GetPixel.mode
+   795 					.ifdef PutPixel
+   796 2335 A9 A9 8D 9F 22 A9 + 	mwa #PutPixel.gr9 PutPixel.mode
    797 					.endif
    798
-   799 					.ifdef fLine
-   800 					mva #$ea _nop
+   799 					.ifdef GetPixel
+   800 					mwa #GetPixel.gr9 GetPixel.mode
    801 					.endif
    802
-   803
-   804 				; GenerateCaseStatementEpilog
-   805 279E 4C B5 27			jmp a_0002
-   806 27A1			l_05A7
+   803 					.ifdef fLine
+   804 					mva #$ea _nop
+   805 					.endif
+   806
    807
-   808 				; ---------------------  ASM Block 071  ---------------------
-   809
-   810 					.ifdef SetColor
-   811 27A1 A9 5C 8D 5A 26 A9 + 	mwa #SetColor.gr15 SetColor.mode
-   812 					.endif
+   808 				; GenerateCaseStatementEpilog
+   809 233F 4C 56 23			jmp a_0002
+   810 2342			l_01B4
+   811
+   812 				; ---------------------  ASM Block 071  ---------------------
    813
-   814 					.ifdef PutPixel
-   815 27AB A9 00 8D FE 26 A9 + 	mwa #PutPixel.gr15 PutPixel.mode
+   814 					.ifdef SetColor
+   815 2342 A9 FD 8D FB 21 A9 + 	mwa #SetColor.gr15 SetColor.mode
    816 					.endif
    817
-   818 					.ifdef GetPixel
-   819 					mwa #GetPixel.gr15 GetPixel.mode
+   818 					.ifdef PutPixel
+   819 234C A9 A1 8D 9F 22 A9 + 	mwa #PutPixel.gr15 PutPixel.mode
    820 					.endif
    821
-   822
-   823 				; GenerateCaseEpilog
-   824 27B5			a_0002
+   822 					.ifdef GetPixel
+   823 					mwa #GetPixel.gr15 GetPixel.mode
+   824 					.endif
    825
-   826 				; ---------------------  ASM Block 072  ---------------------
-   827
-   828 27B5 8A 48			txa:pha
+   826
+   827 				; GenerateCaseEpilog
+   828 2356			a_0002
    829
-   830 27B7 AD 77 30			lda mode
-   831 27BA 29 0F			and #$0f
-   832 27BC A8				tay
+   830 				; ---------------------  ASM Block 072  ---------------------
+   831
+   832 2356 8A 48			txa:pha
    833
-   834 27BD A2 60			ldx #$60	; 6*16
-   835 27BF AD 77 30			lda mode	; %00010000 with text window
-   836 27C2 29 10			and #$10
-   837 27C4 49 10			eor #$10
-   838 27C6 09 02			ora #2		; read
-   839
-   840 					.nowarn @GRAPHICS
-   840 27C8 20 2B 25		 JSR @GRAPHICS
-   841
-   842 27CB 8C 60 29			sty GraphResult
+   834 2358 AD 2D 2C			lda mode
+   835 235B 29 0F			and #$0f
+   836 235D A8				tay
+   837
+   838 235E A2 60			ldx #$60	; 6*16
+   839 2360 AD 2D 2C			lda mode	; %00010000 with text window
+   840 2363 29 10			and #$10
+   841 2365 49 10			eor #$10
+   842 2367 09 02			ora #2		; read
    843
-   844
-   845 					.ifdef MAIN.@DEFINES.ROMOFF
-   846 					inc portb
-   847 					.endif
+   844 					.nowarn @GRAPHICS
+   844 2369 20 64 21		 JSR @GRAPHICS
+   845
+   846 236C 8C 16 25			sty GraphResult
+   847
    848
-   849 				; Fox/TQA
-   850
-   851 = 0057			dindex	equ $57
-   852 = EE7D			tmccn	equ $ee7d
-   853 = EE8D			tmrcn	equ $ee8d
+   849 					.ifdef MAIN.@DEFINES.ROMOFF
+   850 					inc portb
+   851 					.endif
+   852
+   853 				; Fox/TQA
    854
-   855 27CE A6 57			ldx dindex
-   856 27D0 BD 7D EE			lda tmccn,x
-   857 27D3 BC 8D EE			ldy tmrcn,x
-   858 27D6 A2 00			ldx #0
-   859 27D8 C9 40			cmp #<320
-   860 27DA D0 01 E8			sne:inx
-   861
-   862 				; X:A = horizontal resolution
-   863 				; Y = vertical resolution
-   864
-   865 27DD 8D 4A 29			sta MAIN.SYSTEM.ScreenWidth
-   866 27E0 8E 4B 29			stx MAIN.SYSTEM.ScreenWidth+1
-   867
-   868 27E3 38 E9 01			sub #1
-   869 27E6 8D 5A 29			sta WIN_RIGHT
-   870 27E9 8A				txa
-   871 27EA E9 00			sbc #0
-   872 27EC 8D 5B 29			sta WIN_RIGHT+1
-   873
-   874 27EF 8C 4C 29			sty MAIN.SYSTEM.ScreenHeight
-   875 27F2 A9 00			lda #0
-   876 27F4 8D 4D 29			sta MAIN.SYSTEM.ScreenHeight+1
+   855 = 0057			dindex	equ $57
+   856 = EE7D			tmccn	equ $ee7d
+   857 = EE8D			tmrcn	equ $ee8d
+   858
+   859 236F A6 57			ldx dindex
+   860 2371 BD 7D EE			lda tmccn,x
+   861 2374 BC 8D EE			ldy tmrcn,x
+   862 2377 A2 00			ldx #0
+   863 2379 C9 40			cmp #<320
+   864 237B D0 01 E8			sne:inx
+   865
+   866 				; X:A = horizontal resolution
+   867 				; Y = vertical resolution
+   868
+   869 237E 8D 00 25			sta MAIN.SYSTEM.ScreenWidth
+   870 2381 8E 01 25			stx MAIN.SYSTEM.ScreenWidth+1
+   871
+   872 2384 38 E9 01			sub #1
+   873 2387 8D 10 25			sta WIN_RIGHT
+   874 238A 8A				txa
+   875 238B E9 00			sbc #0
+   876 238D 8D 11 25			sta WIN_RIGHT+1
    877
-   878 27F7 8D 58 29			sta WIN_LEFT
-   879 27FA 8D 59 29			sta WIN_LEFT+1
-   880 27FD 8D 5C 29			sta WIN_TOP
-   881 2800 8D 5D 29			sta WIN_TOP+1
-   882
-   883 2803 8D 5F 29			sta WIN_BOTTOM+1
-   884 2806 88				dey
-   885 2807 8C 5E 29			sty WIN_BOTTOM
+   878 2390 8C 02 25			sty MAIN.SYSTEM.ScreenHeight
+   879 2393 A9 00			lda #0
+   880 2395 8D 03 25			sta MAIN.SYSTEM.ScreenHeight+1
+   881
+   882 2398 8D 0E 25			sta WIN_LEFT
+   883 239B 8D 0F 25			sta WIN_LEFT+1
+   884 239E 8D 12 25			sta WIN_TOP
+   885 23A1 8D 13 25			sta WIN_TOP+1
    886
-   887
-   888 = EE6D			tlshc	equ $ee6d
-   889
-   890 280A A6 57			ldx dindex
-   891 280C BC 6D EE			ldy tlshc,x
-   892 280F A9 05			lda #5
-   893 2811 0A			shift	asl @
-   894 2812 88				dey
-   895 2813 D0 FC			bne shift
-   896
-   897 2815 8D 78 30			sta width
-   898 				;	sta SCANLINE_WIDTH
-   899
-   900 					.ifdef fLine
-   901 				;	lda width
-   902 					sta fLine.w0
-   903 					sta fLine.w1
-   904 					sta fLine.w2
-   905 					sta fLine.w3
-   906 					.endif
-   907
-   908 					.ifdef MAIN.@DEFINES.ROMOFF
-   909 					dec portb
+   887 23A4 8D 15 25			sta WIN_BOTTOM+1
+   888 23A7 88				dey
+   889 23A8 8C 14 25			sty WIN_BOTTOM
+   890
+   891
+   892 = EE6D			tlshc	equ $ee6d
+   893
+   894 23AB A6 57			ldx dindex
+   895 23AD BC 6D EE			ldy tlshc,x
+   896 23B0 A9 05			lda #5
+   897 23B2 0A			shift	asl @
+   898 23B3 88				dey
+   899 23B4 D0 FC			bne shift
+   900
+   901 23B6 8D 2E 2C			sta width
+   902 				;	sta SCANLINE_WIDTH
+   903
+   904 					.ifdef fLine
+   905 				;	lda width
+   906 					sta fLine.w0
+   907 					sta fLine.w1
+   908 					sta fLine.w2
+   909 					sta fLine.w3
    910 					.endif
    911
-   912
-   913 				; ---	init_tabs
-   914
-   915 2818 A0 00			ldy #0
-   916 281A 84 92			sty :bp2
-   917 281C 84 93			sty :bp2+1
-   918 281E			it1
-   919 281E A5 93			lda :bp2+1
-   920 2820 99 6E 2E			sta adr.lineHi,y
-   921 2823 A5 92			lda :bp2
-   922 2825 99 6E 2D			sta adr.lineLo,y
-   923 2828 18				clc
-   924 2829 6D 78 30			adc width
-   925 282C 85 92			sta :bp2
-   926 282E 90 02			scc
-   927 2830 E6 93			inc :bp2+1
-   928
-   929 2832 C8				iny
-   930 2833 D0 E9			bne it1
-   931
-   932 2835 A9 55 8D 7B 28		mva #$55 _col+1
-   933
-   934 283A A2 03			ldx #3
-   935 283C 8E 6D 28			stx _and+1
-   936 283F 8A				txa
-   937 2840 9D 9B 28		l0	sta __oras,x
-   938 2843 0A				asl @
-   939 2844 0A				asl @
-   940 2845 CA				dex
-   941 2846 10 F8			bpl l0
-   942
-   943 2848 AD 77 30			lda mode
-   944 284B 29 0F			and #$0f
-   945 284D C9 08			cmp #8
-   946 284F F0 07			beq x8
-   947 2851 C9 06			cmp #6
-   948 2853 F0 03			beq x8
-   949
-   950 2855 4C 6B 28			jmp it2
-   951 2858			x8
-   952 2858 A9 FF 8D 7B 28		mva #$ff _col+1
+   912 					.ifdef MAIN.@DEFINES.ROMOFF
+   913 					dec portb
+   914 					.endif
+   915
+   916
+   917 				; ---	init_tabs
+   918
+   919 23B9 A0 00			ldy #0
+   920 23BB 84 92			sty :bp2
+   921 23BD 84 93			sty :bp2+1
+   922 23BF			it1
+   923 23BF A5 93			lda :bp2+1
+   924 23C1 99 24 2A			sta adr.lineHi,y
+   925 23C4 A5 92			lda :bp2
+   926 23C6 99 24 29			sta adr.lineLo,y
+   927 23C9 18				clc
+   928 23CA 6D 2E 2C			adc width
+   929 23CD 85 92			sta :bp2
+   930 23CF 90 02			scc
+   931 23D1 E6 93			inc :bp2+1
+   932
+   933 23D3 C8				iny
+   934 23D4 D0 E9			bne it1
+   935
+   936 23D6 A9 55 8D 1C 24		mva #$55 _col+1
+   937
+   938 23DB A2 03			ldx #3
+   939 23DD 8E 0E 24			stx _and+1
+   940 23E0 8A				txa
+   941 23E1 9D 3C 24		l0	sta __oras,x
+   942 23E4 0A				asl @
+   943 23E5 0A				asl @
+   944 23E6 CA				dex
+   945 23E7 10 F8			bpl l0
+   946
+   947 23E9 AD 2D 2C			lda mode
+   948 23EC 29 0F			and #$0f
+   949 23EE C9 08			cmp #8
+   950 23F0 F0 07			beq x8
+   951 23F2 C9 06			cmp #6
+   952 23F4 F0 03			beq x8
    953
-   954 285D A2 07			ldx #7
-   955 285F 8E 6D 28			stx _and+1
-   956 2862 A9 01			lda #1
-   957 2864 9D 9B 28		l1	sta __oras,x
-   958 2867 0A				asl @
-   959 2868 CA				dex
-   960 2869 10 F9			bpl l1
-   961
-   962 286B 98			it2	tya
-   963 286C 29 03		_and	and #3
-   964 286E AA				tax
-   965 286F BD 9B 28			lda __oras,x
-   966 2872 49 FF			eor #$ff
-   967 2874 99 6E 29			sta adr.color_bits+$000,y ; color0
-   968 2877 BD 9B 28			lda __oras,x
-   969 287A 29 55		_col	and #$55
-   970 287C 99 6E 2A			sta adr.color_bits+$100,y ; color1
-   971 287F BD 9B 28			lda __oras,x
-   972 2882 29 AA			and #$aa
-   973 2884 99 6E 2B			sta adr.color_bits+$200,y ; color2
-   974 2887 BD 9B 28			lda __oras,x
-   975 288A 29 FF			and #$ff
-   976 288C 99 6E 2C			sta adr.color_bits+$300,y ; color3
-   977 288F 98				tya
-   978 2890 4A				lsr @
-   979 2891 4A			_nop	lsr @
-   980 2892 99 6E 2F			sta adr.div4,y
-   981 2895 C8				iny
-   982 2896 D0 D3			bne it2
-   983
-   984 2898 4C A3 28			jmp stop
-   985
-   986 289B C0 30 0C 03		__oras	dta $c0,$30,$0c,$03
-   987 289F 00 00 00 00			dta 0,0,0,0
-   988
-   989 28A3 68 AA		stop	pla:tax
-   990
-   991
-   992 				; optimize FAIL ('SETACTIVEBUFFER_0576', FASTGRAPH), line = 1188
-   993
-   994 28A5 E8				inx
-   995 28A6 A5 58 95 98			mva ATARI.SAVMSC :STACKORIGIN,x
-   996 28AA A5 59 95 A8			mva ATARI.SAVMSC+1 :STACKORIGIN+STACKWIDTH,x
-   997 28AE 20 27 27			jsr SETACTIVEBUFFER_0576
-   998
-   999 				; ------------------------------------------------------------
-  1000
-  1001 = 3077			MODE	= DATAORIGIN+$072D
-  1002 = 3078			WIDTH	= DATAORIGIN+$072E
-  1003
-  1004 = 3077			@VarData	= MODE
-  1005 = 0002			@VarDataSize	= 2
-  1006
-  1007 28B1			@exit
-  1008 					.ifdef @new
-  1009 					lda <@VarData
-  1010 					sta :ztmp
-  1011 					lda >@VarData
-  1012 					ldy #@VarDataSize-1
-  1013 					jmp @FreeMem
-  1014 					els
-  1015 28B1 60				rts						; ret
-  1016 					eif
-  1017 				.endl
-  1018
-  1019 				; ------------------------------------------------------------
-  1020
-  1021 = 0080			CURRENTDRIVER	= $80
-  1022 = 0000			DETECT	= $00
-  1023 = 0001			CGA	= $01
-  1024 = 0002			MCGA	= $02
-  1025 = 0003			EGA	= $03
-  1026 = 0004			EGA64	= $04
-  1027 = 0005			EGAMONO	= $05
-  1028 = 0006			LOWRES	= $06
-  1029 = 0007			HERCMONO	= $07
-  1030 = 0009			VGA	= $09
-  1031 = 000A			VESA	= $0A
-  1032 = 000B			D1BIT	= $0B
-  1033 = 000C			D2BIT	= $0C
-  1034 = 000D			D4BIT	= $0D
-  1035 = 000E			D6BIT	= $0E
-  1036 = 000F			D8BIT	= $0F
-  1037 = 0010			D12BIT	= $10
-  1038 = 0018			M640X400	= $18
-  1039 = 0018			M640X480	= $18
-  1040 = 0001			GROK	= $01
-  1041 = 00FF			GRNOINITGRAPH	= $FF
-  1042 = 00FE			GRNOTDETECTED	= $FE
-  1043 = 00FD			GRFILENOTFOUND	= $FD
-  1044 = 00FC			GRINVALIDDRIVER	= $FC
-  1045 = 00FB			GRNOLOADMEM	= $FB
-  1046 = 00FA			GRNOSCANMEM	= $FA
-  1047 = 00F9			GRNOFLOODMEM	= $F9
-  1048 = 00F8			GRFONTNOTFOUND	= $F8
-  1049 = 00F7			GRNOFONTMEM	= $F7
-  1050 = 00F6			GRINVALIDMODE	= $F6
-  1051 = 00F5			GRERROR	= $F5
-  1052 = 00F4			GRIOERROR	= $F4
-  1053 = 00F3			GRINVALIDFONT	= $F3
-  1054 = 00F2			GRINVALIDFONTNUM	= $F2
-  1055 = 00EE			GRINVALIDVERSION	= $EE
-  1056 = 0000			CGAC0	= $00
-  1057 = 0001			CGAC1	= $01
-  1058 = 0002			CGAC2	= $02
-  1059 = 0003			CGAC3	= $03
-  1060 = 0004			CGAHI	= $04
-  1061 = 0000			MCGAC0	= $00
-  1062 = 0001			MCGAC1	= $01
-  1063 = 0002			MCGAC2	= $02
-  1064 = 0003			MCGAC3	= $03
-  1065 = 0004			MCGAMED	= $04
-  1066 = 0005			MCGAHI	= $05
-  1067 = 0000			EGALO	= $00
-  1068 = 0001			EGAHI	= $01
-  1069 = 0000			EGA64LO	= $00
-  1070 = 0001			EGA64HI	= $01
-  1071 = 0003			EGAMONOHI	= $03
-  1072 = 000A			VGALO	= $0A
-  1073 = 001F			VGAMED	= $1F
-  1074 = 0018			VGAHI	= $18
-  1075 = 2958			WIN_LEFT	= DATAORIGIN+$000E
-  1076 = 295A			WIN_RIGHT	= DATAORIGIN+$0010
-  1077 = 295C			WIN_TOP	= DATAORIGIN+$0012
-  1078 = 295E			WIN_BOTTOM	= DATAORIGIN+$0014
-  1079 = 2960			GRAPHRESULT	= DATAORIGIN+$0016
-  1080 = 2961			GETCOLOR	= DATAORIGIN+$0017
-  1081 = 2962			adr.LASTARCCOORDS	= [DATAORIGIN+$0018] .array [5]
-  1082 28B2			.var LASTARCCOORDS	= adr.LASTARCCOORDS .word
-  1083 = 2962			LASTARCCOORDS.X	= DATAORIGIN+$0018
-  1084 = 2964			LASTARCCOORDS.Y	= DATAORIGIN+$001A
-  1085 = 2966			LASTARCCOORDS.XSTART	= DATAORIGIN+$001C
-  1086 = 2968			LASTARCCOORDS.YSTART	= DATAORIGIN+$001E
-  1087 = 296A			LASTARCCOORDS.XEND	= DATAORIGIN+$0020
-  1088 = 296C			LASTARCCOORDS.YEND	= DATAORIGIN+$0022
-  1089 = 296E			adr.COLOR_BITS	= [DATAORIGIN+$0024] .array [1024]
-  1090 28B2			.var COLOR_BITS	= adr.COLOR_BITS .word
-  1091 = 2D6E			adr.LINELO	= [DATAORIGIN+$0424] .array [256]
-  1092 28B2			.var LINELO	= adr.LINELO .word
-  1093 = 2E6E			adr.LINEHI	= [DATAORIGIN+$0524] .array [256]
-  1094 28B2			.var LINEHI	= adr.LINEHI .word
-  1095 = 2F6E			adr.DIV4	= [DATAORIGIN+$0624] .array [256]
-  1096 28B2			.var DIV4	= adr.DIV4 .word
-  1097 = 306E			CURRENTX	= DATAORIGIN+$0724
-  1098 = 3070			CURRENTY	= DATAORIGIN+$0726
-  1099 = 3072			VIDEORAM	= DATAORIGIN+$0728
-  1100
-  1101 = 28B2 62 29		LASTARCCOORDS
-  1101 = 28B4 6E 29		COLOR_BITS
-  1101 = 28B6 6E 2D		LINELO
-  1101 = 28B8 6E 2E		LINEHI
-  1101 = 28BA 6E 2F		DIV4
-  1101 				.endl							; UNIT FASTGRAPH
-  1102 28BC			l_04F1
-  1103
-  1104 				; optimize FAIL ('FASTGRAPH.INITGRAPH_057A', depacker.pas), line = 44
-  1105
-  1106 28BC E8				inx
-  1107 28BD A9 05 95 98			mva #$05 :STACKORIGIN,x
-  1108 28C1 20 45 27			jsr FASTGRAPH.INITGRAPH_057A
+   954 23F6 4C 0C 24			jmp it2
+   955 23F9			x8
+   956 23F9 A9 FF 8D 1C 24		mva #$ff _col+1
+   957
+   958 23FE A2 07			ldx #7
+   959 2400 8E 0E 24			stx _and+1
+   960 2403 A9 01			lda #1
+   961 2405 9D 3C 24		l1	sta __oras,x
+   962 2408 0A				asl @
+   963 2409 CA				dex
+   964 240A 10 F9			bpl l1
+   965
+   966 240C 98			it2	tya
+   967 240D 29 03		_and	and #3
+   968 240F AA				tax
+   969 2410 BD 3C 24			lda __oras,x
+   970 2413 49 FF			eor #$ff
+   971 2415 99 24 25			sta adr.color_bits+$000,y ; color0
+   972 2418 BD 3C 24			lda __oras,x
+   973 241B 29 55		_col	and #$55
+   974 241D 99 24 26			sta adr.color_bits+$100,y ; color1
+   975 2420 BD 3C 24			lda __oras,x
+   976 2423 29 AA			and #$aa
+   977 2425 99 24 27			sta adr.color_bits+$200,y ; color2
+   978 2428 BD 3C 24			lda __oras,x
+   979 242B 29 FF			and #$ff
+   980 242D 99 24 28			sta adr.color_bits+$300,y ; color3
+   981 2430 98				tya
+   982 2431 4A				lsr @
+   983 2432 4A			_nop	lsr @
+   984 2433 99 24 2B			sta adr.div4,y
+   985 2436 C8				iny
+   986 2437 D0 D3			bne it2
+   987
+   988 2439 4C 44 24			jmp stop
+   989
+   990 243C C0 30 0C 03		__oras	dta $c0,$30,$0c,$03
+   991 2440 00 00 00 00			dta 0,0,0,0
+   992
+   993 2444 68 AA		stop	pla:tax
+   994
+   995
+   996 				; optimize FAIL ('SETACTIVEBUFFER_0183', FASTGRAPH), line = 1188
+   997
+   998 2446 E8				inx
+   999 2447 A5 58 95 98			mva ATARI.SAVMSC :STACKORIGIN,x
+  1000 244B A5 59 95 A8			mva ATARI.SAVMSC+1 :STACKORIGIN+STACKWIDTH,x
+  1001 244F 20 C8 22			jsr SETACTIVEBUFFER_0183
+  1002
+  1003 				; ------------------------------------------------------------
+  1004
+  1005 = 2C2D			MODE	= DATAORIGIN+$072D
+  1006 = 2C2E			WIDTH	= DATAORIGIN+$072E
+  1007
+  1008 = 2C2D			@VarData	= MODE
+  1009 = 0002			@VarDataSize	= 2
+  1010
+  1011 2452			@exit
+  1012 					.ifdef @new
+  1013 					lda <@VarData
+  1014 					sta :ztmp
+  1015 					lda >@VarData
+  1016 					ldy #@VarDataSize-1
+  1017 					jmp @FreeMem
+  1018 					els
+  1019 2452 60				rts						; ret
+  1020 					eif
+  1021 				.endl
+  1022
+  1023 				; ------------------------------------------------------------
+  1024
+  1025 = 0080			CURRENTDRIVER	= $80
+  1026 = 0000			DETECT	= $00
+  1027 = 0001			CGA	= $01
+  1028 = 0002			MCGA	= $02
+  1029 = 0003			EGA	= $03
+  1030 = 0004			EGA64	= $04
+  1031 = 0005			EGAMONO	= $05
+  1032 = 0006			LOWRES	= $06
+  1033 = 0007			HERCMONO	= $07
+  1034 = 0009			VGA	= $09
+  1035 = 000A			VESA	= $0A
+  1036 = 000B			D1BIT	= $0B
+  1037 = 000C			D2BIT	= $0C
+  1038 = 000D			D4BIT	= $0D
+  1039 = 000E			D6BIT	= $0E
+  1040 = 000F			D8BIT	= $0F
+  1041 = 0010			D12BIT	= $10
+  1042 = 0018			M640X400	= $18
+  1043 = 0018			M640X480	= $18
+  1044 = 0001			GROK	= $01
+  1045 = 00FF			GRNOINITGRAPH	= $FF
+  1046 = 00FE			GRNOTDETECTED	= $FE
+  1047 = 00FD			GRFILENOTFOUND	= $FD
+  1048 = 00FC			GRINVALIDDRIVER	= $FC
+  1049 = 00FB			GRNOLOADMEM	= $FB
+  1050 = 00FA			GRNOSCANMEM	= $FA
+  1051 = 00F9			GRNOFLOODMEM	= $F9
+  1052 = 00F8			GRFONTNOTFOUND	= $F8
+  1053 = 00F7			GRNOFONTMEM	= $F7
+  1054 = 00F6			GRINVALIDMODE	= $F6
+  1055 = 00F5			GRERROR	= $F5
+  1056 = 00F4			GRIOERROR	= $F4
+  1057 = 00F3			GRINVALIDFONT	= $F3
+  1058 = 00F2			GRINVALIDFONTNUM	= $F2
+  1059 = 00EE			GRINVALIDVERSION	= $EE
+  1060 = 0000			CGAC0	= $00
+  1061 = 0001			CGAC1	= $01
+  1062 = 0002			CGAC2	= $02
+  1063 = 0003			CGAC3	= $03
+  1064 = 0004			CGAHI	= $04
+  1065 = 0000			MCGAC0	= $00
+  1066 = 0001			MCGAC1	= $01
+  1067 = 0002			MCGAC2	= $02
+  1068 = 0003			MCGAC3	= $03
+  1069 = 0004			MCGAMED	= $04
+  1070 = 0005			MCGAHI	= $05
+  1071 = 0000			EGALO	= $00
+  1072 = 0001			EGAHI	= $01
+  1073 = 0000			EGA64LO	= $00
+  1074 = 0001			EGA64HI	= $01
+  1075 = 0003			EGAMONOHI	= $03
+  1076 = 000A			VGALO	= $0A
+  1077 = 001F			VGAMED	= $1F
+  1078 = 0018			VGAHI	= $18
+  1079 = 250E			WIN_LEFT	= DATAORIGIN+$000E
+  1080 = 2510			WIN_RIGHT	= DATAORIGIN+$0010
+  1081 = 2512			WIN_TOP	= DATAORIGIN+$0012
+  1082 = 2514			WIN_BOTTOM	= DATAORIGIN+$0014
+  1083 = 2516			GRAPHRESULT	= DATAORIGIN+$0016
+  1084 = 2517			GETCOLOR	= DATAORIGIN+$0017
+  1085 = 2518			adr.LASTARCCOORDS	= [DATAORIGIN+$0018] .array [5]
+  1086 2453			.var LASTARCCOORDS	= adr.LASTARCCOORDS .word
+  1087 = 2518			LASTARCCOORDS.X	= DATAORIGIN+$0018
+  1088 = 251A			LASTARCCOORDS.Y	= DATAORIGIN+$001A
+  1089 = 251C			LASTARCCOORDS.XSTART	= DATAORIGIN+$001C
+  1090 = 251E			LASTARCCOORDS.YSTART	= DATAORIGIN+$001E
+  1091 = 2520			LASTARCCOORDS.XEND	= DATAORIGIN+$0020
+  1092 = 2522			LASTARCCOORDS.YEND	= DATAORIGIN+$0022
+  1093 = 2524			adr.COLOR_BITS	= [DATAORIGIN+$0024] .array [1024]
+  1094 2453			.var COLOR_BITS	= adr.COLOR_BITS .word
+  1095 = 2924			adr.LINELO	= [DATAORIGIN+$0424] .array [256]
+  1096 2453			.var LINELO	= adr.LINELO .word
+  1097 = 2A24			adr.LINEHI	= [DATAORIGIN+$0524] .array [256]
+  1098 2453			.var LINEHI	= adr.LINEHI .word
+  1099 = 2B24			adr.DIV4	= [DATAORIGIN+$0624] .array [256]
+  1100 2453			.var DIV4	= adr.DIV4 .word
+  1101 = 2C24			CURRENTX	= DATAORIGIN+$0724
+  1102 = 2C26			CURRENTY	= DATAORIGIN+$0726
+  1103 = 2C28			VIDEORAM	= DATAORIGIN+$0728
+  1104
+  1105 = 2453 18 25		LASTARCCOORDS
+  1105 = 2455 24 25		COLOR_BITS
+  1105 = 2457 24 29		LINELO
+  1105 = 2459 24 2A		LINEHI
+  1105 = 245B 24 2B		DIV4
+  1105 				.endl							; UNIT FASTGRAPH
+  1106 245D			l_00FE
+  1107
+  1108 				; optimize FAIL ('FASTGRAPH.INITGRAPH_0187', depacker.pas), line = 11
   1109
-  1110 				; optimize FAIL ('CRT.TEXTBACKGROUND', depacker.pas), line = 45
-  1111
-  1112 28C4 E8				inx
-  1113 28C5 A9 00 95 98			mva #$00 :STACKORIGIN,x
-  1114 28C9 20 3D 26			jsr CRT.TEXTBACKGROUND
+  1110 245D E8				inx
+  1111 245E A9 15 95 98			mva #$15 :STACKORIGIN,x
+  1112 2462 20 E6 22			jsr FASTGRAPH.INITGRAPH_0187
+  1113
+  1114 				; optimize FAIL ('FASTGRAPH.SETCOLOR', depacker.pas), line = 11
   1115
-  1116 				; optimize FAIL ('FASTGRAPH.SETCOLOR', depacker.pas), line = 46
-  1117
-  1118 28CC E8				inx
-  1119 28CD A9 01 95 98			mva #$01 :STACKORIGIN,x
-  1120 28D1 20 50 26			jsr FASTGRAPH.SETCOLOR
+  1116 2465 E8				inx
+  1117 2466 A9 01 95 98			mva #$01 :STACKORIGIN,x
+  1118 246A 20 F1 21			jsr FASTGRAPH.SETCOLOR
+  1119
+  1120 				; optimize OK (depacker.pas), line = 13
   1121
-  1122 				; --- For
-  1123
-  1124 				; optimize OK (depacker.pas), line = 48
-  1125
-  1126 28D4 A9 00 8D 7A 30		mva #$00 Y
-  1127
-  1128 28D9			l_0607
-  1129 				; --- ForToDoCondition
-  1130 28D9 AD 7A 30			lda Y
-  1131 28DC C9 23			cmp #$23
-  1132 28DE B0 4E			jcs l_0615
-  1133
-  1134 				; optimize FAIL (1, depacker.pas), line = 49
-  1135
-  1136 28E0 E8				inx
-  1137 28E1 AD 7A 30			lda Y
-  1138 28E4 0A				asl @
-  1139 28E5 A8				tay
-  1140 28E6 B9 7B 31 95 98		mva adr.QR,y :STACKORIGIN,x
-  1141 28EB B9 7C 31 95 A8		mva adr.QR+1,y :STACKORIGIN+STACKWIDTH,x
-  1142 					@moveSTRING BINLINE
-  1142 				 LDY BINLINE+1\ LDA BINLINE\ JSR @MOVESTRING
-  1142 28F0 AC 47 29		 LDY BINLINE+1
-  1142 28F3 AD 46 29		 LDA BINLINE
-  1142 28F6 20 E5 25		 JSR @MOVESTRING
-  1143 28F9 CA				dex
-  1144
-  1145 				; --- For
-  1146
-  1147 				; optimize OK (depacker.pas), line = 50
-  1148
-  1149 28FA A9 01 8D 79 30		mva #$01 X
-  1150
-  1151 28FF			l_0623
-  1152 				; --- ForToDoCondition
-  1153 28FF AC 79 30			ldy X
-  1154 2902 C0 24			cpy #$24
-  1155 2904 B0 23			jcs l_0631
+  1122 246D A9 00 8D 33 2C		mva #$00 X
+  1123 2472 8D 34 2C			sta Y
+  1124
+  1125 				; optimize OK (depacker.pas), line = 14
+  1126
+  1127 2475 A9 41 8D 35 2C		mva #$41 DICFIRSTLETTER
+  1128
+  1129 				; --- For
+  1130
+  1131 				; optimize OK (depacker.pas), line = 16
+  1132
+  1133 247A A9 00 8D 31 2C		mva #$00 I0
+  1134
+  1135 247F			l_021E
+  1136 				; --- ForToDoCondition
+  1137 247F AD 31 2C			lda I0
+  1138 2482 C9 F5			cmp #$F5
+  1139 2484 B0 5A			jcs l_022C
+  1140
+  1141 				; optimize OK (depacker.pas), line = 17
+  1142
+  1143 2486 AD 2F 2C			lda QRCODE
+  1144 2489 18 6D 31 2C			add I0
+  1145 248D A8				tay
+  1146 248E AD 30 2C			lda QRCODE+1
+  1147 2491 69 00			adc #$00
+  1148 2493 85 91			sta :bp+1
+  1149 2495 B1 90			lda (:bp),y
+  1150 2497 38 ED 35 2C			sub DICFIRSTLETTER
+  1151 249B 8D 36 2C			sta QRBLOCK
+  1152
+  1153 				; --- For
+  1154
+  1155 				; optimize OK (depacker.pas), line = 18
   1156
-  1157 				; optimize OK (depacker.pas), line = 51
+  1157 249E A9 04 8D 32 2C		mva #$04 I1
   1158
-  1159 2906 B9 7B 30			lda adr.BINLINE,y
-  1160 2909 C9 31			cmp #$31
-  1161 290B D0 17			jne l_0646
-  1162
-  1163 				; optimize FAIL ('FASTGRAPH.PUTPIXEL', depacker.pas), line = 52
-  1164
-  1165 290D E8				inx
-  1166 290E AD 79 30 95 98		mva X :STACKORIGIN,x
-  1167 2913 A9 00 95 A8			mva #$00 :STACKORIGIN+STACKWIDTH,x
-  1168 2917 E8				inx
-  1169 2918 AD 7A 30 95 98		mva Y :STACKORIGIN,x
-  1170 291D A9 00 95 A8			mva #$00 :STACKORIGIN+STACKWIDTH,x
-  1171 2921 20 B7 26			jsr FASTGRAPH.PUTPIXEL
-  1172 2924			l_0646
-  1173
-  1174 				; --- ForToDoEpilog
-  1175 2924 EE 79 30			inc X
-  1176 2927 D0 D6			jne l_0623
-  1177 2929			l_0631
+  1159 24A3			l_0244
+  1160 				; --- ForToDoCondition
+  1161
+  1162 				; optimize OK (depacker.pas), line = 19
+  1163
+  1164 24A3 AD 36 2C			lda QRBLOCK
+  1165 24A6 29 10			and #$10
+  1166 24A8 F0 17			jeq l_0268
+  1167
+  1168 				; optimize FAIL ('FASTGRAPH.PUTPIXEL', depacker.pas), line = 19
+  1169
+  1170 24AA E8				inx
+  1171 24AB AD 33 2C 95 98		mva X :STACKORIGIN,x
+  1172 24B0 A9 00 95 A8			mva #$00 :STACKORIGIN+STACKWIDTH,x
+  1173 24B4 E8				inx
+  1174 24B5 AD 34 2C 95 98		mva Y :STACKORIGIN,x
+  1175 24BA A9 00 95 A8			mva #$00 :STACKORIGIN+STACKWIDTH,x
+  1176 24BE 20 58 22			jsr FASTGRAPH.PUTPIXEL
+  1177 24C1			l_0268
   1178
-  1179 				; --- ForToDoEpilog
-  1180 2929 EE 7A 30			inc Y
-  1181 292C D0 AB			jne l_0607
-  1182 292E			l_0615
-  1183
-  1184 292E 20 2C 26			jsr CRT.READKEY					; call Entry
-  1185
-  1186 2931 CA				dex
-  1187
-  1188 				; ------------------------------------------------------------
-  1189
-  1190 = 3079			X	= DATAORIGIN+$072F
-  1191 = 307A			Y	= DATAORIGIN+$0730
-  1192 = 307B			adr.BINLINE	= [DATAORIGIN+$0731] .array [256]
-  1193 2932			.var BINLINE	= adr.BINLINE .word
-  1194 = 317B			adr.QR	= [DATAORIGIN+$0831] .array [35]
-  1195 2932			.var QR	= adr.QR .word
-  1196 = 0022			@FORTMP_0604	= $22
-  1197 = 0023			@FORTMP_0620	= $23
-  1198 2932			@exit
-  1199
-  1200 2932 A2 00		@halt	ldx #0
-  1201 2934 9A				txs
-  1202 					.ifdef MAIN.@DEFINES.ROMOFF
-  1203 					inc portb
-  1204 					.endif
-  1205
-  1206 2935 60				rts
-  1207
-  1208 				; ------------------------------------------------------------
-  1209
-  1210 2936 00 00 00 00 00 00 + IOCB@COPY	:16 brk
-  1211
-  1212 				; ------------------------------------------------------------
-  1213
-  1214 2946			.local	@DEFINES
-  1215 2946			ATARI
-  1216 				.endl
-  1217
-  1218 = 2946 7B 30		BINLINE
-  1218 = 2948 7B 31		QR
-  1218 				.endl							; MAIN
-  1219
-  1220 				; ------------------------------------------------------------
-  1221 				; ------------------------------------------------------------
-  1222
-  1223 				.macro	UNITINITIALIZATION
-  1224 				
-  1225 					.ifdef MAIN.SYSTEM.@UnitInit
-  1226 					jsr MAIN.SYSTEM.@UnitInit
-  1227 					eif
-  1228 				
-  1229 					.ifdef MAIN.ATARI.@UnitInit
-  1230 					jsr MAIN.ATARI.@UnitInit
-  1231 					eif
-  1232 				
-  1233 					.ifdef MAIN.CRT.@UnitInit
-  1234 					jsr MAIN.CRT.@UnitInit
-  1235 					eif
-  1236 				
-  1237 					.ifdef MAIN.TYPES.@UnitInit
-  1238 					jsr MAIN.TYPES.@UnitInit
-  1239 					eif
-  1240 				
-  1241 					.ifdef MAIN.FASTGRAPH.@UnitInit
-  1242 					jsr MAIN.FASTGRAPH.@UnitInit
-  1243 					eif
-  1244 				.endm
+  1179 				; optimize OK (depacker.pas), line = 20
+  1180
+  1181 24C1 0E 36 2C			asl QRBLOCK
+  1182
+  1183 				; optimize OK (depacker.pas), line = 21
+  1184
+  1185 24C4 EE 33 2C			inc X
+  1186
+  1187 				; optimize OK (depacker.pas), line = 22
+  1188
+  1189 24C7 AD 33 2C			lda X
+  1190 24CA C9 23			cmp #$23
+  1191 24CC D0 08			jne l_0298
+  1192
+  1193 				; optimize OK (depacker.pas), line = 23
+  1194
+  1195 24CE A9 00 8D 33 2C		mva #$00 X
+  1196 24D3 EE 34 2C			inc Y
+  1197 24D6			l_0298
+  1198
+  1199 				; --- ForToDoEpilog
+  1200 24D6 CE 32 2C			dec I1
+  1201 24D9 10 C8			jpl l_0244
+  1202 24DB			l_0252
+  1203
+  1204 				; --- ForToDoEpilog
+  1205 24DB EE 31 2C			inc I0
+  1206 24DE D0 9F			jne l_021E
+  1207 24E0			l_022C
+  1208
+  1209 24E0 20 D2 21			jsr CRT.READKEY					; call Entry
+  1210
+  1211 24E3 CA				dex
+  1212
+  1213 				; optimize FAIL ('CRT.TEXTMODE', depacker.pas), line = 28
+  1214
+  1215 24E4 E8				inx
+  1216 24E5 A9 00 95 98			mva #$00 :STACKORIGIN,x
+  1217 24E9 20 E3 21			jsr CRT.TEXTMODE
+  1218
+  1219 				; ------------------------------------------------------------
+  1220
+  1221 = 2C2F			QRCODE	= DATAORIGIN+$072F
+  1222 = 2C31			I0	= DATAORIGIN+$0731
+  1223 = 2C32			I1	= DATAORIGIN+$0732
+  1224 = 2C33			X	= DATAORIGIN+$0733
+  1225 = 2C34			Y	= DATAORIGIN+$0734
+  1226 = 2C35			DICFIRSTLETTER	= DATAORIGIN+$0735
+  1227 = 2C36			QRBLOCK	= DATAORIGIN+$0736
+  1228 = 00F4			@FORTMP_021B	= $F4
+  1229 = 0000			@FORTMP_0241	= $00
+  1230 24EC			@exit
+  1231
+  1232 24EC A2 00		@halt	ldx #0
+  1233 24EE 9A				txs
+  1234 					.ifdef MAIN.@DEFINES.ROMOFF
+  1235 					inc portb
+  1236 					.endif
+  1237
+  1238 24EF 60				rts
+  1239
+  1240 				; ------------------------------------------------------------
+  1241
+  1242 24F0 00 00 00 00 00 00 + IOCB@COPY	:16 brk
+  1243
+  1244 				; ------------------------------------------------------------
   1245
-  1246 				; ------------------------------------------------------------
-  1247
-  1248 					ift .SIZEOF(MAIN.SYSTEM) > 0
-  1249 					.print 'SYSTEM: ',MAIN.SYSTEM,'..',MAIN.SYSTEM+.SIZEOF(MAIN.SYSTEM)-1
-  1249 				SYSTEM: $2628..$262B
-  1250 					eif
+  1246 2500			.local	@DEFINES
+  1247 2500			ATARI
+  1248 				.endl
+  1249
+  1250 				.endl							; MAIN
   1251
-  1252 					ift .SIZEOF(MAIN.ATARI) > 0
-  1253 					.print 'ATARI: ',MAIN.ATARI,'..',MAIN.ATARI+.SIZEOF(MAIN.ATARI)-1
-  1254 					eif
-  1255
-  1256 					ift .SIZEOF(MAIN.CRT) > 0
-  1257 					.print 'CRT: ',MAIN.CRT,'..',MAIN.CRT+.SIZEOF(MAIN.CRT)-1
-  1257 				CRT: $262C..$264F
-  1258 					eif
-  1259
-  1260 					ift .SIZEOF(MAIN.TYPES) > 0
-  1261 					.print 'TYPES: ',MAIN.TYPES,'..',MAIN.TYPES+.SIZEOF(MAIN.TYPES)-1
-  1262 					eif
-  1263
-  1264 					ift .SIZEOF(MAIN.FASTGRAPH) > 0
-  1265 					.print 'FASTGRAPH: ',MAIN.FASTGRAPH,'..',MAIN.FASTGRAPH+.SIZEOF(MAIN.FASTGRAPH)-1
-  1265 				FASTGRAPH: $2650..$28BB
-  1266 					eif
-  1267
-  1268 					.print 'CODE: ',CODEORIGIN,'..',*-1
-  1268 				CODE: $2000..$2949
-  1269
-  1270 				; ------------------------------------------------------------
-  1271
-  1272 294A			DATAORIGIN
-  1273 294A 28 00 18 00 2D 0C + .by  $28 $00 $18 $00 $2D $0C $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $27 $00 $00 $00 $17 $00 $00 $00
-  1274 2962 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1275 297A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1276 2992 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1277 29AA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1278 29C2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1279 29DA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1280 29F2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1281 2A0A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1282 2A22 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1283 2A3A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1284 2A52 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1285 2A6A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1286 2A82 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1287 2A9A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1288 2AB2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1289 2ACA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1290 2AE2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1291 2AFA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1292 2B12 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1293 2B2A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1294 2B42 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1295 2B5A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1296 2B72 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1297 2B8A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1298 2BA2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1299 2BBA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1300 2BD2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1301 2BEA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1302 2C02 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1303 2C1A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1304 2C32 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1305 2C4A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1306 2C62 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1307 2C7A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1308 2C92 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1309 2CAA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1310 2CC2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1311 2CDA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1312 2CF2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1313 2D0A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1314 2D22 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1315 2D3A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1316 2D52 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1317 2D6A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1318 2D82 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1319 2D9A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1320 2DB2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1321 2DCA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1322 2DE2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1323 2DFA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1324 2E12 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1325 2E2A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1326 2E42 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1327 2E5A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1328 2E72 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1329 2E8A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1330 2EA2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1331 2EBA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1332 2ED2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1333 2EEA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1334 2F02 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1335 2F1A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1336 2F32 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1337 2F4A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1338 2F62 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1339 2F7A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1340 2F92 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1341 2FAA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1342 2FC2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1343 2FDA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1344 2FF2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1345 300A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1346 3022 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1347 303A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1348 3052 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1349 306A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1350 3082 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1351 309A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1352 30B2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1353 30CA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1354 30E2 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1355 30FA 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1356 3112 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1357 312A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1358 3142 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1359 315A 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
-  1360 3172 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $20 $25 $20 $4A $20 $6F  $20 $94 $20 $B9 $20 $DE $20 $03
-  1361 318A 21 28 21 4D 21 72 + .by  $21 $28 $21 $4D $21 $72 $21 $97  $21 $BC $21 $E1 $21 $06 $22 $2B  $22 $50 $22 $75 $22 $9A $22 $BF
-  1362 31A2 22 E4 22 09 23 2E + .by  $22 $E4 $22 $09 $23 $2E $23 $53  $23 $78 $23 $9D $23 $C2 $23 $E7  $23 $0C $24 $31 $24 $56 $24 $7B
-  1363 31BA 24 A0 24 C5 24 00 + .by  $24 $A0 $24 $C5 $24 $00 $20
-  1364
-  1365 = 0877			VARINITSIZE	= *-DATAORIGIN
-  1366 = 0877			VARDATASIZE	= 2167
-  1367
-  1368 = 31C1			PROGRAMSTACK	= DATAORIGIN+VARDATASIZE
-  1369
-  1370 					.print 'DATA: ',DATAORIGIN,'..',PROGRAMSTACK
-  1370 				DATA: $294A..$31C1
-  1371
-  1372 02E0-02E1> 02 26			run START
-  1373
-  1374 				; ------------------------------------------------------------
-  1375
-  1376 				.macro	STATICDATA
-  1377 				.by  $23 $31 $31 $31 $31 $31 $31 $31  $31 $31 $31 $31 $31 $31 $31 $31  $31 $31 $31 $31 $31 $31 $31 $31
-  1378 				.by  $31 $31 $31 $31 $31 $31 $31 $31  $31 $31 $31 $31 $00 $23 $31 $30  $30 $30 $30 $30 $30 $30 $31 $30
-  1379 				.by  $30 $30 $31 $30 $31 $30 $30 $31  $31 $31 $31 $31 $31 $31 $30 $30  $31 $30 $30 $30 $30 $30 $30 $30
-  1380 				.by  $31 $00 $23 $31 $30 $31 $31 $31  $31 $31 $30 $31 $30 $30 $30 $31  $31 $30 $31 $30 $30 $30 $30 $30
-  1381 				.by  $31 $31 $31 $31 $31 $31 $30 $31  $31 $31 $31 $31 $30 $31 $00 $23  $31 $30 $31 $30 $30 $30 $31 $30
-  1382 				.by  $31 $30 $31 $30 $30 $31 $30 $30  $30 $31 $30 $30 $31 $31 $31 $30  $30 $31 $31 $30 $31 $30 $30 $30
-  1383 				.by  $31 $30 $31 $00 $23 $31 $30 $31  $30 $30 $30 $31 $30 $31 $30 $30  $31 $30 $31 $30 $30 $30 $31 $31
-  1384 				.by  $30 $31 $31 $30 $31 $30 $31 $31  $30 $31 $30 $30 $30 $31 $30 $31  $00 $23 $31 $30 $31 $30 $30 $30
-  1385 				.by  $31 $30 $31 $31 $31 $31 $31 $31  $30 $30 $31 $31 $31 $30 $31 $31  $30 $31 $30 $30 $31 $30 $31 $30
-  1386 				.by  $30 $30 $31 $30 $31 $00 $23 $31  $30 $31 $31 $31 $31 $31 $30 $31  $30 $31 $31 $30 $30 $31 $30 $30
-  1387 				.by  $31 $30 $30 $30 $30 $31 $30 $30  $31 $31 $30 $31 $31 $31 $31 $31  $30 $31 $00 $23 $31 $30 $30 $30
-  1388 				.by  $30 $30 $30 $30 $31 $30 $31 $30  $31 $30 $31 $30 $31 $30 $31 $30  $31 $30 $31 $30 $31 $30 $31 $30
-  1389 				.by  $30 $30 $30 $30 $30 $30 $31 $00  $23 $31 $31 $31 $31 $31 $31 $31  $31 $31 $31 $30 $31 $31 $30 $30
-  1390 				.by  $31 $31 $30 $30 $30 $31 $31 $31  $31 $30 $30 $31 $31 $31 $31 $31  $31 $31 $31 $31 $00 $23 $31 $30
-  1391 				.by  $30 $31 $31 $30 $30 $30 $31 $31  $31 $31 $30 $31 $30 $30 $31 $31  $30 $31 $30 $31 $30 $31 $30 $30
-  1392 				.by  $31 $31 $30 $31 $30 $30 $30 $30  $31 $00 $23 $31 $30 $30 $31 $31  $30 $30 $31 $30 $31 $30 $30 $31
-  1393 				.by  $30 $31 $31 $30 $30 $31 $30 $30  $31 $31 $31 $31 $31 $30 $31 $31  $30 $30 $31 $31 $30 $31 $00 $23
-  1394 				.by  $31 $30 $31 $30 $30 $30 $31 $30  $31 $30 $31 $31 $30 $30 $31 $31  $31 $30 $30 $31 $31 $31 $30 $30
-  1395 				.by  $31 $31 $31 $31 $31 $30 $31 $30  $30 $31 $31 $00 $23 $31 $30 $31  $30 $31 $31 $31 $31 $30 $31 $31
-  1396 				.by  $30 $30 $31 $30 $31 $30 $31 $30  $30 $31 $31 $31 $31 $30 $31 $30  $31 $31 $31 $31 $31 $30 $30 $31
-  1397 				.by  $00 $23 $31 $31 $31 $30 $31 $30  $30 $30 $30 $30 $31 $30 $31 $30  $30 $30 $30 $30 $30 $31 $30 $30
-  1398 				.by  $31 $30 $31 $30 $31 $31 $31 $31  $30 $30 $31 $31 $31 $00 $23 $31  $30 $31 $30 $30 $30 $31 $31 $31
-  1399 				.by  $30 $30 $31 $31 $31 $31 $31 $31  $30 $30 $30 $31 $30 $31 $31 $30  $30 $30 $30 $30 $30 $30 $31 $31
-  1400 				.by  $30 $31 $00 $23 $31 $30 $31 $31  $30 $30 $30 $30 $31 $30 $31 $30  $31 $31 $30 $30 $30 $30 $30 $30
-  1401 				.by  $31 $31 $31 $30 $30 $31 $31 $31  $30 $30 $31 $30 $30 $31 $31 $00  $23 $31 $30 $30 $31 $31 $30 $30
-  1402 				.by  $31 $30 $30 $31 $30 $31 $30 $31  $31 $31 $30 $30 $31 $31 $31 $31  $30 $31 $30 $31 $30 $30 $30 $30
-  1403 				.by  $31 $30 $30 $31 $00 $23 $31 $30  $31 $31 $30 $31 $31 $30 $30 $30  $31 $31 $30 $30 $31 $30 $30 $31
-  1404 				.by  $30 $30 $30 $30 $30 $31 $31 $31  $30 $31 $31 $30 $31 $31 $31 $31  $31 $00 $23 $31 $30 $31 $31 $30
-  1405 				.by  $31 $31 $31 $30 $31 $30 $31 $31  $30 $30 $30 $31 $31 $31 $30 $31  $30 $31 $30 $31 $30 $31 $31 $31
-  1406 				.by  $31 $30 $31 $31 $30 $31 $00 $23  $31 $30 $31 $31 $31 $31 $30 $30  $30 $30 $31 $30 $30 $31 $31 $31
-  1407 				.by  $30 $31 $30 $31 $31 $31 $30 $30  $31 $31 $31 $31 $31 $30 $31 $30  $30 $31 $31 $00 $23 $31 $30 $30
-  1408 				.by  $31 $30 $30 $30 $31 $30 $31 $31  $31 $31 $30 $31 $31 $30 $31 $30  $31 $31 $30 $30 $30 $31 $31 $31
-  1409 				.by  $31 $30 $30 $30 $31 $31 $31 $31  $00 $23 $31 $31 $31 $30 $30 $30  $31 $30 $31 $30 $30 $31 $30 $31
-  1410 				.by  $30 $31 $31 $31 $30 $31 $30 $30  $30 $31 $30 $30 $30 $30 $31 $30  $31 $31 $31 $31 $31 $00 $23 $31
-  1411 				.by  $30 $30 $31 $30 $31 $30 $31 $30  $31 $30 $30 $31 $30 $31 $31 $30  $30 $31 $30 $31 $31 $30 $31 $31
-  1412 				.by  $31 $30 $31 $31 $30 $31 $31 $31  $30 $31 $00 $23 $31 $31 $31 $30  $31 $31 $30 $30 $31 $30 $30 $31
-  1413 				.by  $31 $31 $31 $30 $30 $30 $31 $31  $31 $30 $30 $30 $31 $31 $31 $31  $31 $30 $31 $31 $30 $31 $31 $00
-  1414 				.by  $23 $31 $31 $31 $31 $30 $31 $31  $31 $31 $30 $31 $30 $30 $31 $30  $31 $31 $30 $30 $31 $31 $31 $30
-  1415 				.by  $31 $30 $31 $31 $31 $31 $31 $30  $31 $31 $31 $31 $00 $23 $31 $30  $30 $30 $31 $30 $31 $30 $31 $31
-  1416 				.by  $30 $30 $30 $31 $31 $31 $31 $31  $30 $31 $30 $30 $30 $31 $31 $30  $30 $30 $30 $30 $31 $30 $30 $31
-  1417 				.by  $31 $00 $23 $31 $31 $31 $31 $31  $31 $31 $31 $31 $30 $30 $31 $31  $30 $30 $30 $31 $30 $30 $31 $31
-  1418 				.by  $31 $31 $31 $31 $30 $31 $31 $31  $30 $31 $31 $30 $31 $31 $00 $23  $31 $30 $30 $30 $30 $30 $30 $30
-  1419 				.by  $31 $31 $30 $31 $31 $31 $30 $31  $30 $31 $30 $31 $31 $30 $30 $30  $31 $30 $31 $30 $31 $30 $30 $30
-  1420 				.by  $31 $31 $31 $00 $23 $31 $30 $31  $31 $31 $31 $31 $30 $31 $30 $31  $31 $31 $31 $30 $31 $30 $31 $30
-  1421 				.by  $30 $31 $30 $30 $30 $30 $30 $31  $31 $31 $30 $30 $31 $30 $30 $31  $00 $23 $31 $30 $31 $30 $30 $30
-  1422 				.by  $31 $30 $31 $30 $30 $30 $31 $30  $30 $30 $31 $31 $30 $30 $31 $30  $30 $31 $31 $30 $30 $30 $30 $30
-  1423 				.by  $31 $31 $31 $30 $31 $00 $23 $31  $30 $31 $30 $30 $30 $31 $30 $31  $31 $30 $31 $30 $31 $30 $31 $30
-  1424 				.by  $30 $31 $30 $30 $31 $31 $31 $31  $30 $31 $31 $31 $31 $31 $31 $30  $30 $31 $00 $23 $31 $30 $31 $30
-  1425 				.by  $30 $30 $31 $30 $31 $31 $31 $30  $31 $30 $31 $30 $30 $30 $30 $31  $31 $31 $30 $30 $31 $30 $31 $31
-  1426 				.by  $31 $31 $30 $31 $30 $31 $31 $00  $23 $31 $30 $31 $31 $31 $31 $31  $30 $31 $30 $30 $31 $30 $30 $30
-  1427 				.by  $30 $30 $31 $30 $31 $31 $31 $30  $30 $31 $31 $30 $30 $30 $30 $30  $31 $31 $31 $31 $00 $23 $31 $30
-  1428 				.by  $30 $30 $30 $30 $30 $30 $31 $30  $31 $30 $30 $30 $31 $30 $31 $30  $31 $31 $30 $30 $30 $31 $31 $31
-  1429 				.by  $31 $30 $31 $31 $31 $31 $31 $30  $31 $00
-  1430 				.endm
-  1431
-  1432 					end
+  1252 				; ------------------------------------------------------------
+  1253 				; ------------------------------------------------------------
+  1254
+  1255 				.macro	UNITINITIALIZATION
+  1256 				
+  1257 					.ifdef MAIN.SYSTEM.@UnitInit
+  1258 					jsr MAIN.SYSTEM.@UnitInit
+  1259 					eif
+  1260 				
+  1261 					.ifdef MAIN.ATARI.@UnitInit
+  1262 					jsr MAIN.ATARI.@UnitInit
+  1263 					eif
+  1264 				
+  1265 					.ifdef MAIN.CRT.@UnitInit
+  1266 					jsr MAIN.CRT.@UnitInit
+  1267 					eif
+  1268 				
+  1269 					.ifdef MAIN.TYPES.@UnitInit
+  1270 					jsr MAIN.TYPES.@UnitInit
+  1271 					eif
+  1272 				
+  1273 					.ifdef MAIN.FASTGRAPH.@UnitInit
+  1274 					jsr MAIN.FASTGRAPH.@UnitInit
+  1275 					eif
+  1276 				.endm
+  1277
+  1278 				; ------------------------------------------------------------
+  1279
+  1280 					ift .SIZEOF(MAIN.SYSTEM) > 0
+  1281 					.print 'SYSTEM: ',MAIN.SYSTEM,'..',MAIN.SYSTEM+.SIZEOF(MAIN.SYSTEM)-1
+  1281 				SYSTEM: $21CE..$21D1
+  1282 					eif
+  1283
+  1284 					ift .SIZEOF(MAIN.ATARI) > 0
+  1285 					.print 'ATARI: ',MAIN.ATARI,'..',MAIN.ATARI+.SIZEOF(MAIN.ATARI)-1
+  1286 					eif
+  1287
+  1288 					ift .SIZEOF(MAIN.CRT) > 0
+  1289 					.print 'CRT: ',MAIN.CRT,'..',MAIN.CRT+.SIZEOF(MAIN.CRT)-1
+  1289 				CRT: $21D2..$21F0
+  1290 					eif
+  1291
+  1292 					ift .SIZEOF(MAIN.TYPES) > 0
+  1293 					.print 'TYPES: ',MAIN.TYPES,'..',MAIN.TYPES+.SIZEOF(MAIN.TYPES)-1
+  1294 					eif
+  1295
+  1296 					ift .SIZEOF(MAIN.FASTGRAPH) > 0
+  1297 					.print 'FASTGRAPH: ',MAIN.FASTGRAPH,'..',MAIN.FASTGRAPH+.SIZEOF(MAIN.FASTGRAPH)-1
+  1297 				FASTGRAPH: $21F1..$245C
+  1298 					eif
+  1299
+  1300 					.print 'CODE: ',CODEORIGIN,'..',*-1
+  1300 				CODE: $2000..$24FF
+  1301
+  1302 				; ------------------------------------------------------------
+  1303
+  1304 2500			DATAORIGIN
+  1305 2500 28 00 18 00 2D 0C + .by  $28 $00 $18 $00 $2D $0C $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $27 $00 $00 $00 $17 $00 $00 $00
+  1306 2518 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1307 2530 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1308 2548 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1309 2560 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1310 2578 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1311 2590 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1312 25A8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1313 25C0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1314 25D8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1315 25F0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1316 2608 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1317 2620 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1318 2638 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1319 2650 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1320 2668 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1321 2680 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1322 2698 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1323 26B0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1324 26C8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1325 26E0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1326 26F8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1327 2710 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1328 2728 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1329 2740 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1330 2758 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1331 2770 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1332 2788 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1333 27A0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1334 27B8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1335 27D0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1336 27E8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1337 2800 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1338 2818 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1339 2830 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1340 2848 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1341 2860 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1342 2878 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1343 2890 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1344 28A8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1345 28C0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1346 28D8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1347 28F0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1348 2908 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1349 2920 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1350 2938 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1351 2950 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1352 2968 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1353 2980 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1354 2998 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1355 29B0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1356 29C8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1357 29E0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1358 29F8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1359 2A10 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1360 2A28 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1361 2A40 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1362 2A58 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1363 2A70 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1364 2A88 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1365 2AA0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1366 2AB8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1367 2AD0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1368 2AE8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1369 2B00 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1370 2B18 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1371 2B30 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1372 2B48 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1373 2B60 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1374 2B78 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1375 2B90 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1376 2BA8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1377 2BC0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1378 2BD8 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1379 2BF0 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1380 2C08 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 $00
+  1381 2C20 00 00 00 00 00 00 + .by  $00 $00 $00 $00 $00 $00 $00 $00  $00 $00 $00 $00 $00 $00 $00 <[CODEORIGIN+$0001]  >[CODEORIGIN+$0001]
+  1382
+  1383 = 0731			VARINITSIZE	= *-DATAORIGIN
+  1384 = 0737			VARDATASIZE	= 1847
+  1385
+  1386 = 2C37			PROGRAMSTACK	= DATAORIGIN+VARDATASIZE
+  1387
+  1388 					.print 'DATA: ',DATAORIGIN,'..',PROGRAMSTACK
+  1388 				DATA: $2500..$2C37
+  1389
+  1390 02E0-02E1> 9E 21			run START
+  1391
+  1392 				; ------------------------------------------------------------
+  1393
+  1394 				.macro	STATICDATA
+  1395 				.by  $F5 $60 $60 $60 $60 $60 $60 $60  $51 $43 $46 $48 $5F $49 $42 $58  $5B $47 $51 $50 $5C $5E $55 $4B
+  1396 				.by  $53 $45 $5D $5B $46 $55 $4B $4B  $47 $5B $5B $46 $55 $4C $5F $4F  $5B $4B $46 $58 $5B $5A $45 $45
+  1397 				.by  $5C $5E $51 $43 $56 $4B $56 $49  $42 $60 $60 $4D $59 $5F $50 $60  $54 $44 $5B $4E $4B $4E $42 $54
+  1398 				.by  $46 $46 $53 $50 $57 $4E $55 $4B  $5A $5A $5A $5F $54 $56 $5E $53  $55 $5F $58 $5A $5E $41 $55 $42
+  1399 				.by  $46 $50 $48 $55 $4F $50 $59 $57  $41 $4E $57 $43 $57 $41 $5D $5D  $54 $54 $45 $56 $5A $5E $49 $4A
+  1400 				.by  $57 $59 $5A $45 $44 $57 $60 $57  $5E $4D $4F $56 $50 $4E $58 $51  $54 $56 $5A $5F $54 $53 $46 $5E
+  1401 				.by  $56 $52 $5D $50 $5D $4B $4B $5E  $43 $43 $60 $53 $56 $46 $53 $5C  $57 $5E $5E $53 $50 $44 $52 $5F
+  1402 				.by  $5C $5F $5F $53 $5A $5B $60 $50  $52 $4C $44 $5E $44 $41 $54 $60  $5F $4D $4A $60 $4F $5C $51 $44
+  1403 				.by  $4F $56 $52 $4B $48 $58 $5B $5F  $55 $51 $4F $4A $55 $4B $45 $4D  $54 $41 $5E $55 $4C $4B $53 $50
+  1404 				.by  $50 $5A $55 $4C $56 $42 $5A $50  $4C $58 $5B $49 $46 $5A $51 $50  $51 $43 $52 $4C $44 $5C $5E $60
+  1405 				.by  $60 $60 $60 $60 $60 $60 $00
+  1406 				.endm
+  1407
+  1408 					end
