@@ -42,18 +42,15 @@ begin
     p2 := pointer(screen - 31 + $200);
 
     for b0i := 0 to 255 do begin
-      tmp := p0[30];
-      inc(tmp,p0[31]); inc(tmp,p0[32]); inc(tmp,p0[63]);
+      tmp := p0[30] + p0[31]+ p0[32]+ p0[63];
       tmp := tmp shr 2;
       p0^ := tmp;
 
-      tmp := p1[30];
-      inc(tmp,p1[31]); inc(tmp,p1[32]); inc(tmp,p1[63]);
+      tmp := p1[30] + p1[31]+ p1[32]+ p1[63];
       tmp := tmp shr 2;
       p1^ := tmp;
 
-      tmp := p2[30];
-      inc(tmp,p2[31]); inc(tmp,p2[32]); inc(tmp,p2[63]);
+      tmp := p2[30] + p2[31]+ p2[32]+ p2[63];
       tmp := tmp shr 2;
       p2^ := tmp;
 
