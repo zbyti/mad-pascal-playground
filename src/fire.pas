@@ -36,7 +36,7 @@ begin
 
   FillChar(pointer(screen), $400, 0);
 
- while true do begin
+  while true do begin
     p0 := pointer(screen - 31);
     p1 := pointer(screen - 31 + $100);
     p2 := pointer(screen - 31 + $200);
