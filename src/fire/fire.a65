@@ -1,5 +1,5 @@
 ; ------------------------------------------------------------
-; Mad Pascal Compiler version 1.6.5 [2020/11/01] for 6502
+; Mad Pascal Compiler version 1.6.5 [2020/11/02] for 6502
 ; ------------------------------------------------------------
 
 STACKWIDTH	= 16
@@ -517,84 +517,48 @@ l_00E9
 
 	ldy #$1E
 	lda (P0),y
-	sta :STACKORIGIN+9
 	iny
-	lda :STACKORIGIN+9
 	add (P0),y
 	iny
 	add (P0),y
-	sta :STACKORIGIN+9
 	ldy #$3F
-	lda :STACKORIGIN+9
 	add (P0),y
-	sta TMP
-
-; optimize OK (fire.pas), line = 46
-
 	lsr @
 	lsr @
-	sta TMP
-
-; optimize OK (fire.pas), line = 47
-
 	ldy #$00
 	sta (P0),y
 
-; optimize OK (fire.pas), line = 49
+; optimize OK (fire.pas), line = 46
 
 	ldy #$1E
 	lda (P1),y
-	sta :STACKORIGIN+9
 	iny
-	lda :STACKORIGIN+9
 	add (P1),y
 	iny
 	add (P1),y
-	sta :STACKORIGIN+9
 	ldy #$3F
-	lda :STACKORIGIN+9
 	add (P1),y
-	sta TMP
-
-; optimize OK (fire.pas), line = 50
-
 	lsr @
 	lsr @
-	sta TMP
-
-; optimize OK (fire.pas), line = 51
-
 	ldy #$00
 	sta (P1),y
 
-; optimize OK (fire.pas), line = 53
+; optimize OK (fire.pas), line = 47
 
 	ldy #$1E
 	lda (P2),y
-	sta :STACKORIGIN+9
 	iny
-	lda :STACKORIGIN+9
 	add (P2),y
 	iny
 	add (P2),y
-	sta :STACKORIGIN+9
 	ldy #$3F
-	lda :STACKORIGIN+9
 	add (P2),y
-	sta TMP
-
-; optimize OK (fire.pas), line = 54
-
 	lsr @
 	lsr @
-	sta TMP
-
-; optimize OK (fire.pas), line = 55
-
 	ldy #$00
 	sta (P2),y
 
-; optimize FAIL (0, fire.pas), line = 57
+; optimize FAIL (0, fire.pas), line = 49
 
 	inc P0
 	sne
@@ -611,16 +575,16 @@ l_00E9
 	jne l_00E9
 l_00F7
 
-; optimize OK (fire.pas), line = 61
+; optimize OK (fire.pas), line = 53
 
 	mva #$E0 P0
 	mva #$66 P0+1
 
-; optimize OK (fire.pas), line = 62
+; optimize OK (fire.pas), line = 54
 
 	mva #$1F B0I
 
-l_0199
+l_0175
 ; --- ForToDoCondition
 	lda SYSTEM.RND
 	and #$0F
@@ -629,8 +593,8 @@ l_0199
 
 ; --- ForToDoEpilog
 	dec B0I
-	jpl l_0199
-l_01A7
+	jpl l_0175
+l_0183
 l_00D3
 
 ; optimize OK (fire.pas), line = 39
@@ -644,15 +608,15 @@ CHARSET	= $6000
 adr.DL	= CODEORIGIN+$0000
 .var DL	= adr.DL .word
 B0I	= $E0
-B1I	= $E1
-TMP	= $E2
-P0	= $E3
-P1	= $E5
-P2	= $E7
+P0	= $E1
+P1	= $E3
+P2	= $E5
+B1I	= DATAORIGIN+$000B
+TMP	= DATAORIGIN+$000C
 @FORTMP_0085	= $0F
 @FORTMP_009C	= $07
 @FORTMP_00E6	= $FF
-@FORTMP_0196	= $00
+@FORTMP_0172	= $00
 @exit
 
 @halt	ldx #$00
@@ -712,7 +676,7 @@ DATAORIGIN
 .by  $28 $00 $18 $00 $2D $0C
 
 VARINITSIZE	= *-DATAORIGIN
-VARDATASIZE	= 11
+VARDATASIZE	= 13
 
 PROGRAMSTACK	= DATAORIGIN+VARDATASIZE
 

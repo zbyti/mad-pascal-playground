@@ -11,33 +11,33 @@ mads 2.1.1
    112
    113 2062			START
    114 2062 BA				tsx
-   115 2063 8E FF 21			stx MAIN.@halt+1
+   115 2063 8E E3 21			stx MAIN.@halt+1
    116
    117 					.ifdef fmulinit
    118 					fmulinit
    119 					eif
    120
-   121 = 0005			VLEN	= VARDATASIZE-VARINITSIZE
-   122 = 221C			VADR	= DATAORIGIN+VARINITSIZE
+   121 = 0007			VLEN	= VARDATASIZE-VARINITSIZE
+   122 = 2200			VADR	= DATAORIGIN+VARINITSIZE
    123
    124 					ift VADR > $BFFF
    125 					ert 'Invalid memory address range ',VADR
    126 					eli (VLEN>0) && (VLEN<=256)
-   127 2066 A2 FB			ldx #256-VLEN
+   127 2066 A2 F9			ldx #256-VLEN
    128 2068 A9 00			lda #$00
-   129 206A 9D 21 21 E8 D0 FA		sta:rne VADR+VLEN-256,x+
+   129 206A 9D 07 21 E8 D0 FA		sta:rne VADR+VLEN-256,x+
    130 					eli VLEN>0
    131 					@fill #VADR #VLEN #$00
    132 					eif
    133
-   134 2070 A9 21 85 82 A9 22 + 	mwa #PROGRAMSTACK psptr
+   134 2070 A9 07 85 82 A9 22 + 	mwa #PROGRAMSTACK psptr
    135
    136 					.ifdef MAIN.@DEFINES.ROMOFF
    137 					icl 'atari\romoff.asm'
    138 					.endif
    139
    140 2078 A2 0F			ldx #$0F					; DOS II+/D ParamStr
-   141 207A BD 40 03 9D 04 22 + 	mva:rpl $340,x MAIN.IOCB@COPY,x-
+   141 207A BD 40 03 9D E8 21 + 	mva:rpl $340,x MAIN.IOCB@COPY,x-
    142
    143 2083 E8				inx						; X = 0
    144 2084 86 90			stx bp						; BP = 0
@@ -194,20 +194,20 @@ Macro: UNITINITIALIZATION [Source: fire.a65]
    294 = 0008			FMOPENWRITE	= $08
    295 = 0009			FMOPENAPPEND	= $09
    296 = 000C			FMOPENREADWRITE	= $0C
-   297 = 2216			SCREENWIDTH	= DATAORIGIN+$0000
-   298 = 2218			SCREENHEIGHT	= DATAORIGIN+$0002
-   299 = 221A			DATESEPARATOR	= DATAORIGIN+$0004
+   297 = 21FA			SCREENWIDTH	= DATAORIGIN+$0000
+   298 = 21FC			SCREENHEIGHT	= DATAORIGIN+$0002
+   299 = 21FE			DATESEPARATOR	= DATAORIGIN+$0004
    300 = D014			TVSYSTEM	= $D014
    301 = D20A			RND	= $D20A
    302 = 02C0			adr.PALETTE	= $02C0
    303 20C2			.var PALETTE	= adr.PALETTE .word
    304 = D012			adr.HPALETTE	= $D012
    305 20C2			.var HPALETTE	= adr.HPALETTE .word
-   306 = 221B			FILEMODE	= DATAORIGIN+$0005
-   307 = 221C			GRAPHMODE	= DATAORIGIN+$0006
-   308 = 221D			IORESULT	= DATAORIGIN+$0007
-   309 = 221E			EOLN	= DATAORIGIN+$0008
-   310 = 221F			RNDSEED	= DATAORIGIN+$0009
+   306 = 21FF			FILEMODE	= DATAORIGIN+$0005
+   307 = 2200			GRAPHMODE	= DATAORIGIN+$0006
+   308 = 2201			IORESULT	= DATAORIGIN+$0007
+   309 = 2202			EOLN	= DATAORIGIN+$0008
+   310 = 2203			RNDSEED	= DATAORIGIN+$0009
    311
    312 = 20C2 C0 02		PALETTE
    312 = 20C4 12 D0		HPALETTE
@@ -314,323 +314,287 @@ Macro: UNITINITIALIZATION [Source: fire.a65]
    412 				; optimize OK (fire.pas), line = 28
    413
    414 20C6 A9 20 8D C8 02		mva #$20 ATARI.COLOR4
-   415 20CB A9 00 85 E2			mva #$00 TMP
+   415 20CB A9 00 8D 06 22		mva #$00 TMP
    416
    417 				; optimize OK (fire.pas), line = 29
    418
-   419 20CF 8D 30 02			sta ATARI.SDLSTL
-   420 20D2 A9 20 8D 31 02		mva #$20 ATARI.SDLSTL+1
-   421 20D7 A9 60 8D F4 02		mva #$60 ATARI.CHBAS
+   419 20D0 8D 30 02			sta ATARI.SDLSTL
+   420 20D3 A9 20 8D 31 02		mva #$20 ATARI.SDLSTL+1
+   421 20D8 A9 60 8D F4 02		mva #$60 ATARI.CHBAS
    422
    423 				; optimize OK (fire.pas), line = 30
    424
-   425 20DC A9 40 8D 6F 02		mva #$40 ATARI.GPRIOR
-   426 20E1 A9 21 8D 2F 02		mva #$21 ATARI.SDMCTL
+   425 20DD A9 40 8D 6F 02		mva #$40 ATARI.GPRIOR
+   426 20E2 A9 21 8D 2F 02		mva #$21 ATARI.SDMCTL
    427
    428 				; optimize OK (fire.pas), line = 32
    429
-   430 20E6 A9 00 85 E0			mva #$00 B0I
+   430 20E7 A9 00 85 E0			mva #$00 B0I
    431
-   432 20EA			l_0088
+   432 20EB			l_0088
    433 				; --- ForToDoCondition
-   434 20EA A5 E0			lda B0I
-   435 20EC C9 10			cmp #$10
-   436 20EE B0 36			jcs l_0096
+   434 20EB A5 E0			lda B0I
+   435 20ED C9 10			cmp #$10
+   436 20EF B0 3D			jcs l_0096
    437
    438 				; optimize OK (fire.pas), line = 33
    439
-   440 20F0 A9 00 85 E1			mva #$00 B1I
+   440 20F1 A9 00 8D 05 22		mva #$00 B1I
    441
-   442 20F4			l_009F
+   442 20F6			l_009F
    443 				; --- ForToDoCondition
-   444 20F4 A5 E1			lda B1I
-   445 20F6 C9 08			cmp #$08
-   446 20F8 B0 21			jcs l_00AD
-   447 20FA A9 00			lda #$00
-   448 20FC 85 B2			sta :STACKORIGIN+STACKWIDTH+10
-   449 20FE A5 E0			lda B0I
-   450 2100 0A				asl @
-   451 2101 26 B2			rol :STACKORIGIN+STACKWIDTH+10
-   452 2103 0A				asl @
-   453 2104 26 B2			rol :STACKORIGIN+STACKWIDTH+10
-   454 2106 0A				asl @
-   455 2107 26 B2			rol :STACKORIGIN+STACKWIDTH+10
-   456 2109 18 65 E1			add B1I
-   457 210C A8				tay
-   458 210D A9 60			lda #$60
-   459 210F 65 B2			adc :STACKORIGIN+STACKWIDTH+10
-   460 2111 85 91			sta :bp+1
-   461 2113 A5 E2			lda TMP
-   462 2115 91 90			sta (:bp),y
+   444 20F6 AD 05 22			lda B1I
+   445 20F9 C9 08			cmp #$08
+   446 20FB B0 24			jcs l_00AD
+   447 20FD A9 00			lda #$00
+   448 20FF 85 B2			sta :STACKORIGIN+STACKWIDTH+10
+   449 2101 A5 E0			lda B0I
+   450 2103 0A				asl @
+   451 2104 26 B2			rol :STACKORIGIN+STACKWIDTH+10
+   452 2106 0A				asl @
+   453 2107 26 B2			rol :STACKORIGIN+STACKWIDTH+10
+   454 2109 0A				asl @
+   455 210A 26 B2			rol :STACKORIGIN+STACKWIDTH+10
+   456 210C 18 6D 05 22			add B1I
+   457 2110 A8				tay
+   458 2111 A9 60			lda #$60
+   459 2113 65 B2			adc :STACKORIGIN+STACKWIDTH+10
+   460 2115 85 91			sta :bp+1
+   461 2117 AD 06 22			lda TMP
+   462 211A 91 90			sta (:bp),y
    463
    464 				; --- ForToDoEpilog
-   465 2117 E6 E1			inc B1I
-   466 2119 D0 D9			jne l_009F
-   467 211B			l_00AD
+   465 211C EE 05 22			inc B1I
+   466 211F D0 D5			jne l_009F
+   467 2121			l_00AD
    468
    469 				; optimize OK (fire.pas), line = 34
    470
-   471 211B A5 E2			lda TMP
-   472 211D 18 69 11			add #$11
-   473 2120 85 E2			sta TMP
+   471 2121 AD 06 22			lda TMP
+   472 2124 18 69 11			add #$11
+   473 2127 8D 06 22			sta TMP
    474
    475 				; --- ForToDoEpilog
-   476 2122 E6 E0			inc B0I
-   477 2124 D0 C4			jne l_0088
-   478 2126			l_0096
+   476 212A E6 E0			inc B0I
+   477 212C D0 BD			jne l_0088
+   478 212E			l_0096
    479
    480 				; optimize OK (fire.pas), line = 37
    481
-   482 2126				.LOCAL
-   483 2126 A0 00			ldy #$00
-   484 2128 98				tya
-   485 2129 99 00 64 99 80 64 + fill	:8 sta $6400+#*$80,y
-   486 2141 C8				iny
-   487 2142 10 E5			bpl fill
+   482 212E				.LOCAL
+   483 212E A0 00			ldy #$00
+   484 2130 98				tya
+   485 2131 99 00 64 99 80 64 + fill	:8 sta $6400+#*$80,y
+   486 2149 C8				iny
+   487 214A 10 E5			bpl fill
    488 					.ENDL
    489
    490 				; --- WhileProlog
-   491 2144 4C FB 21			jmp l_00D3
-   492 2147			l_00D4
+   491 214C 4C DF 21			jmp l_00D3
+   492 214F			l_00D4
    493
    494 				; optimize OK (fire.pas), line = 40
    495
-   496 2147 A9 E1 85 E3			mva #$E1 P0
-   497 214B A9 63 85 E4			mva #$63 P0+1
+   496 214F A9 E1 85 E1			mva #$E1 P0
+   497 2153 A9 63 85 E2			mva #$63 P0+1
    498
    499 				; optimize OK (fire.pas), line = 41
    500
-   501 214F A9 E1 85 E5			mva #$E1 P1
-   502 2153 A9 64 85 E6			mva #$64 P1+1
+   501 2157 A9 E1 85 E3			mva #$E1 P1
+   502 215B A9 64 85 E4			mva #$64 P1+1
    503
    504 				; optimize OK (fire.pas), line = 42
    505
-   506 2157 A9 E1 85 E7			mva #$E1 P2
-   507 215B A9 65 85 E8			mva #$65 P2+1
+   506 215F A9 E1 85 E5			mva #$E1 P2
+   507 2163 A9 65 85 E6			mva #$65 P2+1
    508
    509 				; optimize OK (fire.pas), line = 44
    510
-   511 215F A9 00 85 E0			mva #$00 B0I
+   511 2167 A9 00 85 E0			mva #$00 B0I
    512
-   513 2163			l_00E9
+   513 216B			l_00E9
    514 				; --- ForToDoCondition
    515
    516 				; optimize OK (fire.pas), line = 45
    517
-   518 2163 A0 1E			ldy #$1E
-   519 2165 B1 E3			lda (P0),y
-   520 2167 85 A1			sta :STACKORIGIN+9
-   521 2169 C8				iny
-   522 216A A5 A1			lda :STACKORIGIN+9
-   523 216C 18 71 E3			add (P0),y
-   524 216F C8				iny
-   525 2170 18 71 E3			add (P0),y
-   526 2173 85 A1			sta :STACKORIGIN+9
-   527 2175 A0 3F			ldy #$3F
-   528 2177 A5 A1			lda :STACKORIGIN+9
-   529 2179 18 71 E3			add (P0),y
-   530 217C 85 E2			sta TMP
-   531
-   532 				; optimize OK (fire.pas), line = 46
-   533
-   534 217E 4A				lsr @
-   535 217F 4A				lsr @
-   536 2180 85 E2			sta TMP
-   537
-   538 				; optimize OK (fire.pas), line = 47
-   539
-   540 2182 A0 00			ldy #$00
-   541 2184 91 E3			sta (P0),y
-   542
-   543 				; optimize OK (fire.pas), line = 49
-   544
-   545 2186 A0 1E			ldy #$1E
-   546 2188 B1 E5			lda (P1),y
-   547 218A 85 A1			sta :STACKORIGIN+9
-   548 218C C8				iny
-   549 218D A5 A1			lda :STACKORIGIN+9
-   550 218F 18 71 E5			add (P1),y
-   551 2192 C8				iny
-   552 2193 18 71 E5			add (P1),y
-   553 2196 85 A1			sta :STACKORIGIN+9
-   554 2198 A0 3F			ldy #$3F
-   555 219A A5 A1			lda :STACKORIGIN+9
-   556 219C 18 71 E5			add (P1),y
-   557 219F 85 E2			sta TMP
-   558
-   559 				; optimize OK (fire.pas), line = 50
+   518 216B A0 1E			ldy #$1E
+   519 216D B1 E1			lda (P0),y
+   520 216F C8				iny
+   521 2170 18 71 E1			add (P0),y
+   522 2173 C8				iny
+   523 2174 18 71 E1			add (P0),y
+   524 2177 A0 3F			ldy #$3F
+   525 2179 18 71 E1			add (P0),y
+   526 217C 4A				lsr @
+   527 217D 4A				lsr @
+   528 217E A0 00			ldy #$00
+   529 2180 91 E1			sta (P0),y
+   530
+   531 				; optimize OK (fire.pas), line = 46
+   532
+   533 2182 A0 1E			ldy #$1E
+   534 2184 B1 E3			lda (P1),y
+   535 2186 C8				iny
+   536 2187 18 71 E3			add (P1),y
+   537 218A C8				iny
+   538 218B 18 71 E3			add (P1),y
+   539 218E A0 3F			ldy #$3F
+   540 2190 18 71 E3			add (P1),y
+   541 2193 4A				lsr @
+   542 2194 4A				lsr @
+   543 2195 A0 00			ldy #$00
+   544 2197 91 E3			sta (P1),y
+   545
+   546 				; optimize OK (fire.pas), line = 47
+   547
+   548 2199 A0 1E			ldy #$1E
+   549 219B B1 E5			lda (P2),y
+   550 219D C8				iny
+   551 219E 18 71 E5			add (P2),y
+   552 21A1 C8				iny
+   553 21A2 18 71 E5			add (P2),y
+   554 21A5 A0 3F			ldy #$3F
+   555 21A7 18 71 E5			add (P2),y
+   556 21AA 4A				lsr @
+   557 21AB 4A				lsr @
+   558 21AC A0 00			ldy #$00
+   559 21AE 91 E5			sta (P2),y
    560
-   561 21A1 4A				lsr @
-   562 21A2 4A				lsr @
-   563 21A3 85 E2			sta TMP
-   564
-   565 				; optimize OK (fire.pas), line = 51
-   566
-   567 21A5 A0 00			ldy #$00
-   568 21A7 91 E5			sta (P1),y
-   569
-   570 				; optimize OK (fire.pas), line = 53
-   571
-   572 21A9 A0 1E			ldy #$1E
-   573 21AB B1 E7			lda (P2),y
-   574 21AD 85 A1			sta :STACKORIGIN+9
-   575 21AF C8				iny
-   576 21B0 A5 A1			lda :STACKORIGIN+9
-   577 21B2 18 71 E7			add (P2),y
-   578 21B5 C8				iny
-   579 21B6 18 71 E7			add (P2),y
-   580 21B9 85 A1			sta :STACKORIGIN+9
-   581 21BB A0 3F			ldy #$3F
-   582 21BD A5 A1			lda :STACKORIGIN+9
-   583 21BF 18 71 E7			add (P2),y
-   584 21C2 85 E2			sta TMP
-   585
-   586 				; optimize OK (fire.pas), line = 54
-   587
-   588 21C4 4A				lsr @
-   589 21C5 4A				lsr @
-   590 21C6 85 E2			sta TMP
-   591
-   592 				; optimize OK (fire.pas), line = 55
+   561 				; optimize FAIL (0, fire.pas), line = 49
+   562
+   563 21B0 E6 E1			inc P0
+   564 21B2 D0 02			sne
+   565 21B4 E6 E2			inc P0+1
+   566 21B6 E6 E3			inc P1
+   567 21B8 D0 02			sne
+   568 21BA E6 E4			inc P1+1
+   569 21BC E6 E5			inc P2
+   570 21BE D0 02			sne
+   571 21C0 E6 E6			inc P2+1
+   572
+   573 				; --- ForToDoEpilog
+   574 21C2 E6 E0			inc B0I
+   575 21C4 D0 A5			jne l_00E9
+   576 21C6			l_00F7
+   577
+   578 				; optimize OK (fire.pas), line = 53
+   579
+   580 21C6 A9 E0 85 E1			mva #$E0 P0
+   581 21CA A9 66 85 E2			mva #$66 P0+1
+   582
+   583 				; optimize OK (fire.pas), line = 54
+   584
+   585 21CE A9 1F 85 E0			mva #$1F B0I
+   586
+   587 21D2			l_0175
+   588 				; --- ForToDoCondition
+   589 21D2 AD 0A D2			lda SYSTEM.RND
+   590 21D5 29 0F			and #$0F
+   591 21D7 A4 E0			ldy B0I
+   592 21D9 91 E1			sta (P0),y
    593
-   594 21C8 A0 00			ldy #$00
-   595 21CA 91 E7			sta (P2),y
-   596
-   597 				; optimize FAIL (0, fire.pas), line = 57
-   598
-   599 21CC E6 E3			inc P0
-   600 21CE D0 02			sne
-   601 21D0 E6 E4			inc P0+1
-   602 21D2 E6 E5			inc P1
-   603 21D4 D0 02			sne
-   604 21D6 E6 E6			inc P1+1
-   605 21D8 E6 E7			inc P2
-   606 21DA D0 02			sne
-   607 21DC E6 E8			inc P2+1
-   608
-   609 				; --- ForToDoEpilog
-   610 21DE E6 E0			inc B0I
-   611 21E0 D0 81			jne l_00E9
-   612 21E2			l_00F7
-   613
-   614 				; optimize OK (fire.pas), line = 61
-   615
-   616 21E2 A9 E0 85 E3			mva #$E0 P0
-   617 21E6 A9 66 85 E4			mva #$66 P0+1
-   618
-   619 				; optimize OK (fire.pas), line = 62
-   620
-   621 21EA A9 1F 85 E0			mva #$1F B0I
-   622
-   623 21EE			l_0199
-   624 				; --- ForToDoCondition
-   625 21EE AD 0A D2			lda SYSTEM.RND
-   626 21F1 29 0F			and #$0F
-   627 21F3 A4 E0			ldy B0I
-   628 21F5 91 E3			sta (P0),y
+   594 				; --- ForToDoEpilog
+   595 21DB C6 E0			dec B0I
+   596 21DD 10 F3			jpl l_0175
+   597 21DF			l_0183
+   598 21DF			l_00D3
+   599
+   600 				; optimize OK (fire.pas), line = 39
+   601
+   602 21DF 4C 4F 21			jmp l_00D4
+   603
+   604 				; ------------------------------------------------------------
+   605
+   606 = 6400			SCREEN	= $6400
+   607 = 6000			CHARSET	= $6000
+   608 = 2000			adr.DL	= CODEORIGIN+$0000
+   609 21E2			.var DL	= adr.DL .word
+   610 = 00E0			B0I	= $E0
+   611 = 00E1			P0	= $E1
+   612 = 00E3			P1	= $E3
+   613 = 00E5			P2	= $E5
+   614 = 2205			B1I	= DATAORIGIN+$000B
+   615 = 2206			TMP	= DATAORIGIN+$000C
+   616 = 000F			@FORTMP_0085	= $0F
+   617 = 0007			@FORTMP_009C	= $07
+   618 = 00FF			@FORTMP_00E6	= $FF
+   619 = 0000			@FORTMP_0172	= $00
+   620 21E2			@exit
+   621
+   622 21E2 A2 00		@halt	ldx #$00
+   623 21E4 9A				txs
+   624 					.ifdef MAIN.@DEFINES.ROMOFF
+   625 					inc portb
+   626 					.endif
+   627
+   628 21E5 A0 01			ldy #$01
    629
-   630 				; --- ForToDoEpilog
-   631 21F7 C6 E0			dec B0I
-   632 21F9 10 F3			jpl l_0199
-   633 21FB			l_01A7
-   634 21FB			l_00D3
+   630 21E7 60				rts
+   631
+   632 				; ------------------------------------------------------------
+   633
+   634 21E8 00 00 00 00 00 00 + IOCB@COPY	:16 brk
    635
-   636 				; optimize OK (fire.pas), line = 39
+   636 				; ------------------------------------------------------------
    637
-   638 21FB 4C 47 21			jmp l_00D4
-   639
-   640 				; ------------------------------------------------------------
+   638 21F8			.local	@DEFINES
+   639 21F8			ATARI
+   640 				.endl
    641
-   642 = 6400			SCREEN	= $6400
-   643 = 6000			CHARSET	= $6000
-   644 = 2000			adr.DL	= CODEORIGIN+$0000
-   645 21FE			.var DL	= adr.DL .word
-   646 = 00E0			B0I	= $E0
-   647 = 00E1			B1I	= $E1
-   648 = 00E2			TMP	= $E2
-   649 = 00E3			P0	= $E3
-   650 = 00E5			P1	= $E5
-   651 = 00E7			P2	= $E7
-   652 = 000F			@FORTMP_0085	= $0F
-   653 = 0007			@FORTMP_009C	= $07
-   654 = 00FF			@FORTMP_00E6	= $FF
-   655 = 0000			@FORTMP_0196	= $00
-   656 21FE			@exit
-   657
-   658 21FE A2 00		@halt	ldx #$00
-   659 2200 9A				txs
-   660 					.ifdef MAIN.@DEFINES.ROMOFF
-   661 					inc portb
-   662 					.endif
-   663
-   664 2201 A0 01			ldy #$01
-   665
-   666 2203 60				rts
-   667
-   668 				; ------------------------------------------------------------
-   669
-   670 2204 00 00 00 00 00 00 + IOCB@COPY	:16 brk
-   671
-   672 				; ------------------------------------------------------------
-   673
-   674 2214			.local	@DEFINES
-   675 2214			ATARI
-   676 				.endl
+   642 21F8			.local	@RESOURCE
+   643 				.endl
+   644
+   645 = 21F8 00 20		DL
+   645 				.endl							; MAIN
+   646
+   647 				; ------------------------------------------------------------
+   648 				; ------------------------------------------------------------
+   649
+   650 				.macro	UNITINITIALIZATION
+   651 				
+   652 					.ifdef MAIN.SYSTEM.@UnitInit
+   653 					jsr MAIN.SYSTEM.@UnitInit
+   654 					eif
+   655 				
+   656 					.ifdef MAIN.ATARI.@UnitInit
+   657 					jsr MAIN.ATARI.@UnitInit
+   658 					eif
+   659 				.endm
+   660
+   661 				; ------------------------------------------------------------
+   662
+   663 					ift .SIZEOF(MAIN.SYSTEM) > 0
+   664 					.print 'SYSTEM: ',MAIN.SYSTEM,'..',MAIN.SYSTEM+.SIZEOF(MAIN.SYSTEM)-1
+   664 				SYSTEM: $2092..$20C5
+   665 					eif
+   666
+   667 					ift .SIZEOF(MAIN.ATARI) > 0
+   668 					.print 'ATARI: ',MAIN.ATARI,'..',MAIN.ATARI+.SIZEOF(MAIN.ATARI)-1
+   669 					eif
+   670
+   671 					.print 'CODE: ',CODEORIGIN,'..',MAIN.@RESOURCE-1
+   671 				CODE: $2000..$21F7
+   672
+   673 				; ------------------------------------------------------------
+   674
+   675 21FA			DATAORIGIN
+   676 21FA 28 00 18 00 2D 0C	.by  $28 $00 $18 $00 $2D $0C
    677
-   678 2214			.local	@RESOURCE
-   679 				.endl
+   678 = 0006			VARINITSIZE	= *-DATAORIGIN
+   679 = 000D			VARDATASIZE	= 13
    680
-   681 = 2214 00 20		DL
-   681 				.endl							; MAIN
+   681 = 2207			PROGRAMSTACK	= DATAORIGIN+VARDATASIZE
    682
-   683 				; ------------------------------------------------------------
-   684 				; ------------------------------------------------------------
-   685
-   686 				.macro	UNITINITIALIZATION
-   687 				
-   688 					.ifdef MAIN.SYSTEM.@UnitInit
-   689 					jsr MAIN.SYSTEM.@UnitInit
-   690 					eif
-   691 				
-   692 					.ifdef MAIN.ATARI.@UnitInit
-   693 					jsr MAIN.ATARI.@UnitInit
-   694 					eif
-   695 				.endm
-   696
-   697 				; ------------------------------------------------------------
-   698
-   699 					ift .SIZEOF(MAIN.SYSTEM) > 0
-   700 					.print 'SYSTEM: ',MAIN.SYSTEM,'..',MAIN.SYSTEM+.SIZEOF(MAIN.SYSTEM)-1
-   700 				SYSTEM: $2092..$20C5
-   701 					eif
-   702
-   703 					ift .SIZEOF(MAIN.ATARI) > 0
-   704 					.print 'ATARI: ',MAIN.ATARI,'..',MAIN.ATARI+.SIZEOF(MAIN.ATARI)-1
-   705 					eif
-   706
-   707 					.print 'CODE: ',CODEORIGIN,'..',MAIN.@RESOURCE-1
-   707 				CODE: $2000..$2213
-   708
-   709 				; ------------------------------------------------------------
-   710
-   711 2216			DATAORIGIN
-   712 2216 28 00 18 00 2D 0C	.by  $28 $00 $18 $00 $2D $0C
-   713
-   714 = 0006			VARINITSIZE	= *-DATAORIGIN
-   715 = 000B			VARDATASIZE	= 11
-   716
-   717 = 2221			PROGRAMSTACK	= DATAORIGIN+VARDATASIZE
-   718
-   719 					.print 'DATA: ',DATAORIGIN,'..',PROGRAMSTACK
-   719 				DATA: $2216..$2221
-   720
-   721 02E0-02E1> 62 20			run START
-   722
-   723 				; ------------------------------------------------------------
-   724
-   725 				.macro	STATICDATA
-   726 				.by  $42 $00 $64 $02 $02 $02 $02 $02  $02 $02 $02 $02 $02 $02 $02 $02  $02 $02 $02 $02 $02 $02 $02 $41
-   727 				.by  $00 $20
-   728 				.endm
-   729
-   730 					end
+   683 					.print 'DATA: ',DATAORIGIN,'..',PROGRAMSTACK
+   683 				DATA: $21FA..$2207
+   684
+   685 02E0-02E1> 62 20			run START
+   686
+   687 				; ------------------------------------------------------------
+   688
+   689 				.macro	STATICDATA
+   690 				.by  $42 $00 $64 $02 $02 $02 $02 $02  $02 $02 $02 $02 $02 $02 $02 $02  $02 $02 $02 $02 $02 $02 $02 $41
+   691 				.by  $00 $20
+   692 				.endm
+   693
+   694 					end

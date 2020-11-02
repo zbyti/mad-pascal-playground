@@ -16,13 +16,13 @@ const
   );
 
 var
-  b0i    : byte absolute $e0;
-  b1i    : byte absolute $e1;
-  tmp    : byte absolute $e2;
+  b0i      : byte absolute $e0;
 
-  p0     : PByte absolute $e3;
-  p1     : PByte absolute $e5;
-  p2     : PByte absolute $e7;
+  p0       : PByte absolute $e1;
+  p1       : PByte absolute $e3;
+  p2       : PByte absolute $e5;
+
+  b1i, tmp : byte;
 
 begin
   color4 := $20; tmp := 0;
@@ -42,17 +42,9 @@ begin
     p2 := pointer(screen - 31 + $200);
 
     for b0i := 0 to 255 do begin
-      tmp := p0[30] + p0[31]+ p0[32]+ p0[63];
-      tmp := tmp shr 2;
-      p0^ := tmp;
-
-      tmp := p1[30] + p1[31]+ p1[32]+ p1[63];
-      tmp := tmp shr 2;
-      p1^ := tmp;
-
-      tmp := p2[30] + p2[31]+ p2[32]+ p2[63];
-      tmp := tmp shr 2;
-      p2^ := tmp;
+      p0^ := byte(p0[30] + p0[31] + p0[32] + p0[63]) shr 2;
+      p1^ := byte(p1[30] + p1[31] + p1[32] + p1[63]) shr 2;
+      p2^ := byte(p2[30] + p2[31] + p2[32] + p2[63]) shr 2;
 
       inc(p0); inc(p1); inc(p2);
     end;
