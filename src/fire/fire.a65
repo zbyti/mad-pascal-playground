@@ -159,46 +159,7 @@ VADR	= DATAORIGIN+VARINITSIZE
 
 .local	SYSTEM						; UNIT
 
-.local	POKE						; PROCEDURE | ASSEMBLER | REGISTER
-
-; ------------------------------------------------------------
-
-; Generate Assignment for BYTE / CHAR / SHORTINT / BOOLEAN
-; as Pointer
-	mva :STACKORIGIN,x VALUE
-	dex
-
-; ------------------------------------------------------------
-
-; Generate Assignment for WORD / SMALLINT / SHORTREAL / POINTER
-; as Pointer
-	mva :STACKORIGIN,x A
-	mva :STACKORIGIN+STACKWIDTH,x A+1
-	dex
-
-; ---------------------  ASM Block 021  ---------------------
-
-	ldy #0
-	mva value (edx),y
-
-
-; ------------------------------------------------------------
-
-A	= edx
-VALUE	= ecx
-@exit
-	.ifdef @new
-	lda <@VarData
-	sta :ztmp
-	lda >@VarData
-	ldy #@VarDataSize-1
-	jmp @FreeMem
-	els
-	rts						; ret
-	eif
-.endl
-
-.local	FILLCHAR_0049					; PROCEDURE | ASSEMBLER | OVERLOAD | REGISTER
+.local	FILLCHAR_0042					; PROCEDURE | ASSEMBLER | OVERLOAD | REGISTER
 
 ; ------------------------------------------------------------
 
@@ -409,75 +370,71 @@ NMIEN	= $D40E
 .endl							; UNIT ATARI
 l_0007
 
-; optimize OK (fire.pas), line = 28
+; optimize OK (fire.pas), line = 26
 
 	mva #$20 ATARI.COLOR4
 	mva #$00 TMP
 
-; optimize OK (fire.pas), line = 29
+; optimize OK (fire.pas), line = 27
 
 	sta ATARI.SDLSTL
 	mva #$20 ATARI.SDLSTL+1
 	mva #$60 ATARI.CHBAS
 
-; optimize OK (fire.pas), line = 30
+; optimize OK (fire.pas), line = 28
 
 	mva #$40 ATARI.GPRIOR
 	mva #$21 ATARI.SDMCTL
 
-; optimize OK (fire.pas), line = 32
+; optimize OK (fire.pas), line = 30
+
+	mva #$00 P0
+	mva #$60 P0+1
+
+; optimize OK (fire.pas), line = 31
 
 	mva #$00 B0I
 
-l_0088
+l_0085
 ; --- ForToDoCondition
 	lda B0I
 	cmp #$10
-	jcs l_0096
+	jcs l_0093
 
-; optimize OK (fire.pas), line = 33
+; optimize OK (fire.pas), line = 32
 
-	mva #$00 B1I
+	ldy #$00
 
-l_009F
+l_009C
 ; --- ForToDoCondition
-	lda B1I
-	cmp #$08
-	jcs l_00AD
-	lda #$00
-	sta :STACKORIGIN+STACKWIDTH+10
-	lda B0I
-	asl @
-	rol :STACKORIGIN+STACKWIDTH+10
-	asl @
-	rol :STACKORIGIN+STACKWIDTH+10
-	asl @
-	rol :STACKORIGIN+STACKWIDTH+10
-	add B1I
-	tay
-	lda #$60
-	adc :STACKORIGIN+STACKWIDTH+10
-	sta :bp+1
+	cpy #$08
+	jcs l_00AA
 	lda TMP
-	sta (:bp),y
+	sta (P0),y
 
 ; --- ForToDoEpilog
-	inc B1I
-	jne l_009F
-l_00AD
+	iny
+	jne l_009C
+l_00AA
+	sty B1I
 
-; optimize OK (fire.pas), line = 34
+; optimize OK (fire.pas), line = 33
 
 	lda TMP
 	add #$11
 	sta TMP
+	lda P0
+	add #$08
+	sta P0
+	scc
+	inc P0+1
 
 ; --- ForToDoEpilog
 	inc B0I
-	jne l_0088
-l_0096
+	jne l_0085
+l_0093
 
-; optimize OK (fire.pas), line = 37
+; optimize OK (fire.pas), line = 36
 
 	.LOCAL
 	ldy #$00
@@ -488,32 +445,34 @@ fill	:8 sta $6400+#*$80,y
 	.ENDL
 
 ; --- WhileProlog
-	jmp l_00D3
-l_00D4
+	jmp l_00C5
+l_00C6
 
-; optimize OK (fire.pas), line = 40
+; optimize OK (fire.pas), line = 39
 
 	mva #$E1 P0
 	mva #$63 P0+1
 
-; optimize OK (fire.pas), line = 41
+; optimize OK (fire.pas), line = 40
 
 	mva #$E1 P1
 	mva #$64 P1+1
 
-; optimize OK (fire.pas), line = 42
+; optimize OK (fire.pas), line = 41
 
 	mva #$E1 P2
 	mva #$65 P2+1
 
-; optimize OK (fire.pas), line = 44
+; optimize OK (fire.pas), line = 43
 
-	mva #$00 B0I
-
-l_00E9
+	mva #$FF B0I
+	jmp l_00DBf
+l_00DB
 ; --- ForToDoCondition
+	dec B0I
+l_00DBf
 
-; optimize OK (fire.pas), line = 45
+; optimize OK (fire.pas), line = 44
 
 	ldy #$1E
 	lda (P0),y
@@ -528,7 +487,7 @@ l_00E9
 	ldy #$00
 	sta (P0),y
 
-; optimize OK (fire.pas), line = 46
+; optimize OK (fire.pas), line = 45
 
 	ldy #$1E
 	lda (P1),y
@@ -543,7 +502,7 @@ l_00E9
 	ldy #$00
 	sta (P1),y
 
-; optimize OK (fire.pas), line = 47
+; optimize OK (fire.pas), line = 46
 
 	ldy #$1E
 	lda (P2),y
@@ -558,7 +517,7 @@ l_00E9
 	ldy #$00
 	sta (P2),y
 
-; optimize FAIL (0, fire.pas), line = 49
+; optimize FAIL (0, fire.pas), line = 48
 
 	inc P0
 	sne
@@ -571,20 +530,20 @@ l_00E9
 	inc P2+1
 
 ; --- ForToDoEpilog
-	inc B0I
-	jne l_00E9
-l_00F7
+	lda B0I
+	jne l_00DB
+l_00E9
 
-; optimize OK (fire.pas), line = 53
+; optimize OK (fire.pas), line = 52
 
 	mva #$E0 P0
 	mva #$66 P0+1
 
-; optimize OK (fire.pas), line = 54
+; optimize OK (fire.pas), line = 53
 
 	mva #$1F B0I
 
-l_0175
+l_0167
 ; --- ForToDoCondition
 	lda SYSTEM.RND
 	and #$0F
@@ -593,13 +552,13 @@ l_0175
 
 ; --- ForToDoEpilog
 	dec B0I
-	jpl l_0175
-l_0183
-l_00D3
+	jpl l_0167
+l_0175
+l_00C5
 
-; optimize OK (fire.pas), line = 39
+; optimize OK (fire.pas), line = 38
 
-	jmp l_00D4
+	jmp l_00C6
 
 ; ------------------------------------------------------------
 
@@ -613,10 +572,10 @@ P1	= $E3
 P2	= $E5
 B1I	= DATAORIGIN+$000B
 TMP	= DATAORIGIN+$000C
-@FORTMP_0085	= $0F
-@FORTMP_009C	= $07
-@FORTMP_00E6	= $FF
-@FORTMP_0172	= $00
+@FORTMP_0082	= $0F
+@FORTMP_0099	= $07
+@FORTMP_00D8	= $00
+@FORTMP_0164	= $00
 @exit
 
 @halt	ldx #$00
