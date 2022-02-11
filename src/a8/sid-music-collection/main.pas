@@ -100,7 +100,6 @@ begin
     writeln('No.', music_index + 1, ' ', names[music_index]);
 
     repeat
-      pause;
       repeat until vcount = RASTER_START;
       colbk := $0e;
 
