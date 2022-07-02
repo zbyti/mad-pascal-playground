@@ -1,0 +1,20 @@
+#!/bin/bash
+
+mp="$HOME/Programs/MadPascal/mp"
+mads="$HOME/Programs/mads/mads"
+base="$HOME/Programs/MadPascal/base"
+name="main"
+
+rm -f /dev/shm/$name.xex
+
+$mp $name.pas -code:0980 -o /dev/shm/$name.a65
+
+if [ -f /dev/shm/$name.a65 ]; then
+  $mads /dev/shm/$name.a65 -x -i:$base -o:/dev/shm/$name.xex
+else
+  exit 1
+fi
+
+if [ ! -z "$1" ] && [ -f /dev/shm/$name.xex ]; then
+  atari800 /dev/shm/$name.xex
+fi
