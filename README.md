@@ -1,4 +1,4 @@
-# a8-mad-pascal-playground
+# mad-pascal-playground
 
 [Mad Pascal Sources](https://github.com/tebe6502/Mad-Pascal)
 
